@@ -7,6 +7,13 @@
 - [Tiqra](https://tiqra-mvp.vercel.app/): validation platform giving founders a Proceed / Pivot / Kill recommendation from verified human feedback and AI feasibility reports. Case study: https://imran-buhari.netlify.app/tiqra
 - [AgroLynk](https://agrolynk.lovable.app/): mobile-first agritech MVP connecting smallholder farmers to markets, shaped by interviews with farmers and agricultural students; hackathon winner 2025. Case study: https://imran-buhari.netlify.app/agrolynk
 
+- ProjectPilot: planning assistant for student teams; Product Owner for a remote team of 8; Fuse Varsity capstone (2026).
+- Ceeravo: healthcare platform (in development) helping people reach the right hospital; leading a team of 23.
+- Edukate UIL: installable web-app learning platform replacing WhatsApp for a university faculty's course materials (2026).
+
+## Resume
+https://imran-buhari-portfolio.vercel.app/imran-buhari-resume.pdf
+
 ## Leadership
 - Ceeravo: led a team of 23 on a healthcare product (in development) that helps people reach the right hospital, including hospitals with the right equipment for their treatment.
 - ProjectPilot: Product Owner for a remote, cross-functional team of 8 building a planning assistant for student teams (Jira, WhatsApp, Google Drive).
@@ -14,8 +21,8 @@
 ## Skills
 Product strategy, AI product development, idea validation, PRDs and specs, user research (JTBD), product analytics, MVP development.
 
-## Certifications
-Product Management: IOTB Tech (2026), Fuse Varsity (2026), M4ace (2026), Prodcademy (2025).
+## Training
+Product management training: Prodcademy (2025), M4ace, Fuse Varsity and IOTB Tech (2026).
 
 ## Contact
 - Email: buhariimran01@gmail.com

@@ -8,6 +8,7 @@ import {
   Award,
   Check,
   Copy,
+  Download,
   Linkedin,
   Mail,
   MapPin,
@@ -22,6 +23,7 @@ import {
 const EMAIL = "buhariimran01@gmail.com";
 const LINKEDIN = "https://linkedin.com/in/imran-buhari-aa5aa838b";
 const PHOTO = "/images/imran-hero-wide.jpg";
+const RESUME = "/imran-buhari-resume.pdf";
 const HERO = "/images/imran-hero-wide.jpg";
 
 const navLinks = [
@@ -78,13 +80,68 @@ const projects = [
     problem:
       "Smallholder farmers lack reliable market access, timely crop advice, and a way to diagnose disease early.",
     approach:
-      "Led discovery and scoping under hackathon pressure: crop-disease detection, localized advisory, and a community feed — prioritized ruthlessly to ship a demo-ready MVP.",
+      "Interviewed farmers and agricultural students, then scoped and prioritised crop disease detection, localised advisory and a community feed to ship a demo-ready MVP in one weekend.",
+    // TODO: add the number of farmers and students interviewed once confirmed.
     outcome: "Won the hackathon and shipped a working mobile-first MVP.",
     image:
       "https://imran-buhari.netlify.app/assets/images/agrolynk_hero_1779022333927.png",
     caseStudy: "https://imran-buhari.netlify.app/agrolynk",
     live: "https://agrolynk.lovable.app/",
     tint: "#0f2318", glow: "#4cc27a",
+  },
+  {
+    name: "ProjectPilot",
+    category: "Project planning · Student teams",
+    year: "2026",
+    role: "Product Owner",
+    stack: ["Jira", "WhatsApp", "Google Drive"],
+    headline: "Helping student teams plan projects and stay on track.",
+    problem:
+      "Student teams juggle deadlines, roles and tasks across scattered chats and files, and projects stall before the real work starts.",
+    approach:
+      "Served as Product Owner for a remote, cross-functional team of 8, coordinating the work across Jira, WhatsApp and Google Drive, and delivered it as my Fuse Varsity capstone.",
+    // TODO: outcome — one real result, e.g. number of teams or students who tested it.
+    outcome: "",
+    image: "",
+    caseStudy: "",
+    live: "",
+    tint: "#0f1a2b", glow: "#6aa6f2",
+  },
+  {
+    name: "Ceeravo",
+    category: "Healthcare · Platform",
+    year: "In development",
+    role: "Team lead",
+    stack: ["Team of 23"],
+    headline: "Helping people reach the right hospital for their treatment.",
+    problem:
+      "People often don't know which hospitals have the equipment their treatment needs, and lose time getting to the wrong place.",
+    approach:
+      "Leading a team of 23 people to build a platform that connects patients to their chosen hospital, and to hospitals with the right equipment.",
+    // TODO: append current stage, e.g. research done, prototype ready or launch date.
+    outcome: "In development.",
+    image: "",
+    caseStudy: "",
+    live: "",
+    tint: "#0b2223", glow: "#3fc4b5",
+  },
+  {
+    name: "Edukate UIL",
+    category: "Education · Learning platform",
+    year: "2026",
+    role: "Product Manager",
+    stack: ["Web app (PWA)"],
+    headline: "One place for course materials, instead of scattered WhatsApp groups.",
+    problem:
+      "Course materials were shared through WhatsApp, so students lost files and struggled to find what they needed.",
+    approach:
+      "Designed a learning platform, installable as a web app, for a university faculty to replace WhatsApp as the way course materials reach students.",
+    // TODO: outcome — number of students or courses on it.
+    outcome: "",
+    image: "",
+    caseStudy: "",
+    live: "",
+    tint: "#2a150b", glow: "#ee8c4f",
   },
 ];
 
@@ -133,7 +190,6 @@ const toolkit = {
     "Wireframing",
   ],
   "Tools": ["Figma", "Notion", "Lovable", "ChatGPT", "Gemini", "Google AI Studio", "Antigravity", "Canva"],
-  "Ways of working": ["Communication", "Collaboration", "Storytelling", "Critical Thinking", "Adaptability"],
 };
 
 const certifications = [
@@ -267,6 +323,13 @@ function Nav() {
         </nav>
         <div className="flex items-center gap-3">
           <a
+            href={RESUME}
+            download
+            className="hidden min-h-10 items-center gap-1.5 rounded-full border border-cream/20 px-4 text-sm text-cream transition-colors hover:border-cream/60 lg:inline-flex"
+          >
+            <Download className="h-3.5 w-3.5" /> Resume
+          </a>
+          <a
             href="#contact"
             className="hidden min-h-10 items-center rounded-full bg-gold px-4 text-sm font-semibold text-ink transition-colors hover:bg-gold-soft sm:inline-flex"
           >
@@ -292,7 +355,7 @@ function Nav() {
             transition={{ duration: 0.2, ease: easeOut }}
             className="mx-auto mt-2 flex max-w-6xl origin-top flex-col rounded-3xl border border-cream/10 bg-night-2 p-3 shadow-2xl md:hidden"
           >
-            {[...navLinks, { label: "Contact", href: "#contact" }].map((l) => (
+            {[...navLinks, { label: "Contact", href: "#contact" }, { label: "Download resume", href: RESUME }].map((l) => (
               <a
                 key={l.href}
                 href={l.href}
@@ -388,8 +451,8 @@ type Project = (typeof projects)[number];
 function StackCard({ p, i, total, progress }: { p: Project; i: number; total: number; progress: MotionValue<number> }) {
   const start = i / total;
   const depth = total - 1 - i;
-  const scale = useTransform(progress, [start, 1], [1, 1 - depth * 0.05]);
-  const dim = useTransform(progress, [start, 1], [0, depth * 0.2]);
+  const scale = useTransform(progress, [start, 1], [1, 1 - depth * 0.03]);
+  const dim = useTransform(progress, [start, 1], [0, Math.min(depth * 0.12, 0.5)]);
 
   return (
     <div className="sticky top-20 mb-6 flex items-start md:top-28 md:mb-0 md:h-[calc(100svh-7rem)]">
@@ -414,40 +477,88 @@ function StackCard({ p, i, total, progress }: { p: Project; i: number; total: nu
                 <dd className="text-cream/75">{v}</dd>
               </div>
             ))}
-            <div className="grid grid-cols-[6.5rem_1fr] gap-4">
-              <dt className="font-semibold text-gold">Outcome</dt>
-              <dd className="font-medium text-cream">{p.outcome}</dd>
-            </div>
+            {p.outcome && (
+              <div className="grid grid-cols-[6.5rem_1fr] gap-4">
+                <dt className="font-semibold text-gold">Outcome</dt>
+                <dd className="font-medium text-cream">{p.outcome}</dd>
+              </div>
+            )}
           </dl>
-          <p className="mt-5 font-medium md:hidden">
-            <span className="text-gold">Outcome: </span>
-            {p.outcome}
-          </p>
+          <div className="mt-5 space-y-3 text-[15px] leading-relaxed md:hidden">
+            {!p.image && (
+              <>
+                <p className="text-cream/75">
+                  <span className="font-semibold text-cream">Problem: </span>
+                  {p.problem}
+                </p>
+                <p className="text-cream/75">
+                  <span className="font-semibold text-cream">What I did: </span>
+                  {p.approach}
+                </p>
+              </>
+            )}
+            {p.outcome && (
+              <p className="font-medium">
+                <span className="text-gold">Outcome: </span>
+                {p.outcome}
+              </p>
+            )}
+          </div>
 
-          <img
+          {p.image && <img
             src={p.image}
             alt={`${p.name} landing page`}
             loading="lazy"
             className="mt-6 w-full rounded-xl border border-cream/10 shadow-[0_20px_40px_-12px_rgba(0,0,0,0.6)] lg:hidden"
-          />
+          />}
 
-          <div className="mt-auto flex flex-wrap gap-3 pt-6">
-            <a href={p.caseStudy} target="_blank" rel="noreferrer" className={btnGold}>
-              Read the {p.name} case study <ArrowUpRight className="h-4 w-4" />
-            </a>
-            <a href={p.live} target="_blank" rel="noreferrer" className={btnGhost}>
-              Open {p.name} <ArrowUpRight className="h-4 w-4" />
-            </a>
-          </div>
+          {(p.caseStudy || p.live) && (
+            <div className="mt-auto flex flex-wrap gap-3 pt-6">
+              {p.caseStudy && (
+                <a href={p.caseStudy} target="_blank" rel="noreferrer" className={btnGold}>
+                  Read the {p.name} case study <ArrowUpRight className="h-4 w-4" />
+                </a>
+              )}
+              {p.live && (
+                <a href={p.live} target="_blank" rel="noreferrer" className={btnGhost}>
+                  Open {p.name} <ArrowUpRight className="h-4 w-4" />
+                </a>
+              )}
+            </div>
+          )}
+          {!p.caseStudy && !p.live && (
+            <div className="mt-auto flex flex-wrap gap-2 pt-6">
+              {[p.role, ...p.stack].map((t) => (
+                <span key={t} className="rounded-full border border-cream/15 px-3 py-1 text-xs text-cream/70">
+                  {t}
+                </span>
+              ))}
+            </div>
+          )}
         </div>
 
         <div className="relative hidden items-center p-8 lg:flex">
-          <img
-            src={p.image}
-            alt={`${p.name} landing page`}
-            loading="lazy"
-            className="w-full rounded-xl border border-cream/10 shadow-[0_24px_48px_-16px_rgba(0,0,0,0.7)]"
-          />
+          {p.image ? (
+            <img
+              src={p.image}
+              alt={`${p.name} landing page`}
+              loading="lazy"
+              className="w-full rounded-xl border border-cream/10 shadow-[0_24px_48px_-16px_rgba(0,0,0,0.7)]"
+            />
+          ) : (
+            <div
+              aria-hidden="true"
+              className="flex h-full w-full items-end rounded-xl border border-cream/10 p-8"
+              style={{ background: `radial-gradient(ellipse at 70% 20%, ${p.glow}33, transparent 65%)` }}
+            >
+              <span
+                className="font-display text-[clamp(4rem,8vw,7.5rem)] font-extrabold uppercase leading-[0.85]"
+                style={{ color: p.glow }}
+              >
+                {p.name}
+              </span>
+            </div>
+          )}
         </div>
 
         <motion.div style={{ opacity: dim }} className="pointer-events-none absolute inset-0 bg-black" />
@@ -464,7 +575,7 @@ function Work() {
     <section id="work" className="px-5 pt-24 md:pt-32">
       <div className="mx-auto max-w-6xl">
         <Heading sub="Each started as a fuzzy problem. Here's what I found, what I decided, and what shipped.">
-          Three products, taken from <Serif gold>zero to live.</Serif>
+          Selected <Serif gold>work.</Serif>
         </Heading>
         <div ref={ref} className="relative mt-14 pb-24">
           {projects.map((p, i) => (
@@ -567,16 +678,18 @@ function About() {
               </div>
             ))}
             <div>
-              <h3 className="text-sm font-semibold">Certifications</h3>
-              <ul className="mt-1.5 space-y-1 text-[15px] text-ink/70">
-                {certifications.map((c) => (
-                  <li key={c.school} className="flex items-center gap-2">
-                    <Check className="h-4 w-4 text-[#2f7a4b]" /> {c.title}, {c.school}{" "}
-                    <span className="tabular-nums text-ink/50">{c.year}</span>
-                  </li>
-                ))}
-              </ul>
+              <h3 className="text-sm font-semibold">Training</h3>
+              <p className="mt-1.5 text-[15px] leading-relaxed text-ink/70">
+                Product management training: Prodcademy (2025), M4ace, Fuse Varsity and IOTB Tech (2026).
+              </p>
             </div>
+            <a
+              href={RESUME}
+              download
+              className="inline-flex min-h-11 items-center gap-2 rounded-full bg-ink px-6 py-3 text-sm font-semibold text-cream transition-[background-color,transform] duration-200 hover:bg-ink/85 active:scale-[0.97]"
+            >
+              <Download className="h-4 w-4" /> Download resume (PDF)
+            </a>
           </div>
         </div>
       </div>
@@ -702,6 +815,9 @@ function Contact() {
           </button>
           <a href={LINKEDIN} target="_blank" rel="noreferrer" className={btnGhost}>
             <Linkedin className="h-4 w-4" /> LinkedIn
+          </a>
+          <a href={RESUME} download className={btnGhost}>
+            <Download className="h-4 w-4" /> Resume
           </a>
         </div>
       </div>
