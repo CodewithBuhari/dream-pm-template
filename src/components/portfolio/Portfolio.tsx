@@ -23,7 +23,8 @@ import {
 const EMAIL = "buhariimran01@gmail.com";
 const LINKEDIN = "https://linkedin.com/in/imran-buhari-aa5aa838b";
 const PHOTO = "/images/imran-hero-wide.jpg";
-const RESUME = "/imran-buhari-resume.pdf";
+// Set to "/imran-buhari-resume.pdf" once Imran's own CV is added to /public.
+const RESUME = "";
 const HERO = "/images/imran-hero-wide.jpg";
 
 const navLinks = [
@@ -81,7 +82,6 @@ const projects = [
       "Smallholder farmers lack reliable market access, timely crop advice, and a way to diagnose disease early.",
     approach:
       "Interviewed farmers and agricultural students, then scoped and prioritised crop disease detection, localised advisory and a community feed to ship a demo-ready MVP in one weekend.",
-    // TODO: add the number of farmers and students interviewed once confirmed.
     outcome: "Won the hackathon and shipped a working mobile-first MVP.",
     image:
       "https://imran-buhari.netlify.app/assets/images/agrolynk_hero_1779022333927.png",
@@ -100,8 +100,7 @@ const projects = [
       "Student teams juggle deadlines, roles and tasks across scattered chats and files, and projects stall before the real work starts.",
     approach:
       "Served as Product Owner for a remote, cross-functional team of 8, coordinating the work across Jira, WhatsApp and Google Drive, and delivered it as my Fuse Varsity capstone.",
-    // TODO: outcome — one real result, e.g. number of teams or students who tested it.
-    outcome: "",
+    outcome: "Tested by more than 5 student teams.",
     image: "",
     caseStudy: "",
     live: "",
@@ -118,8 +117,7 @@ const projects = [
       "People often don't know which hospitals have the equipment their treatment needs, and lose time getting to the wrong place.",
     approach:
       "Leading a team of 23 people to build a platform that connects patients to their chosen hospital, and to hospitals with the right equipment.",
-    // TODO: append current stage, e.g. research done, prototype ready or launch date.
-    outcome: "In development.",
+    outcome: "Post-MVP stage, still in development.",
     image: "",
     caseStudy: "",
     live: "",
@@ -136,8 +134,7 @@ const projects = [
       "Course materials were shared through WhatsApp, so students lost files and struggled to find what they needed.",
     approach:
       "Designed a learning platform, installable as a web app, for a university faculty to replace WhatsApp as the way course materials reach students.",
-    // TODO: outcome — number of students or courses on it.
-    outcome: "",
+    outcome: "Still in development.",
     image: "",
     caseStudy: "",
     live: "",
@@ -322,13 +319,13 @@ function Nav() {
           ))}
         </nav>
         <div className="flex items-center gap-3">
-          <a
+          {RESUME && <a
             href={RESUME}
             download
             className="hidden min-h-10 items-center gap-1.5 rounded-full border border-cream/20 px-4 text-sm text-cream transition-colors hover:border-cream/60 lg:inline-flex"
           >
             <Download className="h-3.5 w-3.5" /> Resume
-          </a>
+          </a>}
           <a
             href="#contact"
             className="hidden min-h-10 items-center rounded-full bg-gold px-4 text-sm font-semibold text-ink transition-colors hover:bg-gold-soft sm:inline-flex"
@@ -355,7 +352,7 @@ function Nav() {
             transition={{ duration: 0.2, ease: easeOut }}
             className="mx-auto mt-2 flex max-w-6xl origin-top flex-col rounded-3xl border border-cream/10 bg-night-2 p-3 shadow-2xl md:hidden"
           >
-            {[...navLinks, { label: "Contact", href: "#contact" }, { label: "Download resume", href: RESUME }].map((l) => (
+            {[...navLinks, { label: "Contact", href: "#contact" }, ...(RESUME ? [{ label: "Download resume", href: RESUME }] : [])].map((l) => (
               <a
                 key={l.href}
                 href={l.href}
@@ -455,7 +452,7 @@ function StackCard({ p, i, total, progress }: { p: Project; i: number; total: nu
   const dim = useTransform(progress, [start, 1], [0, Math.min(depth * 0.12, 0.5)]);
 
   return (
-    <div className="sticky top-20 mb-6 flex items-start md:top-28 md:mb-0 md:h-[calc(100svh-7rem)]">
+    <div className="sticky top-20 mb-[45svh] flex items-start last:mb-6 md:top-28 md:mb-[40svh] md:h-[calc(100svh-7rem)] md:last:mb-0">
       <motion.article
         style={{ scale, top: i * 18, background: `linear-gradient(140deg, ${p.tint} 0%, #140908 85%)` }}
         className="relative grid w-full origin-top md:h-full md:max-h-[680px] overflow-hidden rounded-[2rem] border border-cream/10 shadow-[0_-24px_60px_-24px_rgba(0,0,0,0.75)] lg:grid-cols-[1.05fr_0.95fr]"
@@ -683,13 +680,13 @@ function About() {
                 Product management training: Prodcademy (2025), M4ace, Fuse Varsity and IOTB Tech (2026).
               </p>
             </div>
-            <a
+            {RESUME && <a
               href={RESUME}
               download
               className="inline-flex min-h-11 items-center gap-2 rounded-full bg-ink px-6 py-3 text-sm font-semibold text-cream transition-[background-color,transform] duration-200 hover:bg-ink/85 active:scale-[0.97]"
             >
               <Download className="h-4 w-4" /> Download resume (PDF)
-            </a>
+            </a>}
           </div>
         </div>
       </div>
@@ -816,9 +813,11 @@ function Contact() {
           <a href={LINKEDIN} target="_blank" rel="noreferrer" className={btnGhost}>
             <Linkedin className="h-4 w-4" /> LinkedIn
           </a>
-          <a href={RESUME} download className={btnGhost}>
-            <Download className="h-4 w-4" /> Resume
-          </a>
+          {RESUME && (
+            <a href={RESUME} download className={btnGhost}>
+              <Download className="h-4 w-4" /> Resume
+            </a>
+          )}
         </div>
       </div>
 

@@ -11,9 +11,6 @@
 - Ceeravo: healthcare platform (in development) helping people reach the right hospital; leading a team of 23.
 - Edukate UIL: installable web-app learning platform replacing WhatsApp for a university faculty's course materials (2026).
 
-## Resume
-https://imran-buhari-portfolio.vercel.app/imran-buhari-resume.pdf
-
 ## Leadership
 - Ceeravo: led a team of 23 on a healthcare product (in development) that helps people reach the right hospital, including hospitals with the right equipment for their treatment.
 - ProjectPilot: Product Owner for a remote, cross-functional team of 8 building a planning assistant for student teams (Jira, WhatsApp, Google Drive).
