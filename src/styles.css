@@ -5,7 +5,8 @@
 @theme inline {
   --font-sans: "Inter Tight", ui-sans-serif, system-ui, sans-serif;
   --font-serif: "Instrument Serif", Georgia, serif;
-  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+  --font-display: "Big Shoulders Display", "Inter Tight", sans-serif;
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
 
   --color-night: #120706;
   --color-night-2: #1c0d0a;
@@ -46,8 +47,8 @@
 @utility font-serif {
   font-family: var(--font-serif);
 }
-@utility font-mono {
-  font-family: var(--font-mono);
+@utility font-display {
+  font-family: var(--font-display);
 }
 
 @utility grain {
@@ -101,4 +102,13 @@ html.lenis body {
     animation-duration: 0.01ms !important;
     transition-duration: 0.01ms !important;
   }
+}
+
+/* Themed browser surfaces */
+html {
+  scrollbar-color: #3a2420 var(--color-night);
+  caret-color: var(--color-gold);
+}
+a {
+  text-underline-offset: 4px;
 }
