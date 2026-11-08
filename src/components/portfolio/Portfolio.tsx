@@ -23,8 +23,7 @@ import {
 const EMAIL = "buhariimran01@gmail.com";
 const LINKEDIN = "https://linkedin.com/in/imran-buhari-aa5aa838b";
 const PHOTO = "/images/imran-hero-wide.jpg";
-// Set to "/imran-buhari-resume.pdf" once Imran's own CV is added to /public.
-const RESUME = "";
+const RESUME = "/buhari-imran-resume.pdf";
 const HERO = "/images/imran-hero-wide.jpg";
 
 const navLinks = [
@@ -81,7 +80,7 @@ const projects = [
     problem:
       "Smallholder farmers lack reliable market access, timely crop advice, and a way to diagnose disease early.",
     approach:
-      "Interviewed farmers and agricultural students, then scoped and prioritised crop disease detection, localised advisory and a community feed to ship a demo-ready MVP in one weekend.",
+      "Interviewed 20+ smallholder farmers and agricultural students, then scoped and prioritised crop disease detection, localised advisory and a community feed to ship a demo-ready MVP in one weekend.",
     outcome: "Won the hackathon and shipped a working mobile-first MVP.",
     image:
       "https://imran-buhari.netlify.app/assets/images/agrolynk_hero_1779022333927.png",
