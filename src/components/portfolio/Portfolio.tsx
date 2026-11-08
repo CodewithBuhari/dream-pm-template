@@ -37,15 +37,16 @@ const projects = [
   {
     name: "Sprint Maestro",
     category: "AI Productivity · B2B Tool",
-    year: "2026",
-    role: "Product Manager",
+    year: "2025",
+    role: "Product Manager · team of 5",
     stack: ["ChatGPT", "Notion", "Lovable"],
     headline: "Turning raw PRDs into sprint-ready plans in minutes.",
     problem:
       "Teams lose hours every sprint converting PRDs into backlogs, stories and estimates — and the output is still inconsistent.",
     approach:
-      "Mapped the planning workflow with PMs and engineers, defined the PRD → backlog pipeline, and shipped an AI MVP that generates stories, acceptance criteria and estimates.",
-    outcome: "Cuts sprint-planning time by ~80% with automated backlog creation and estimation.",
+      "Led a cross-functional team of 5 to design and launch the MVP. Authored the PRD and user flows for automated backlog generation and capacity-aware sprint planning.",
+    outcome:
+      "10 early users tested the MVP and reported an 80% reduction in time spent turning a PRD into a sprint-ready backlog.",
     image:
       "https://imran-buhari.netlify.app/assets/images/sprint_maestro_hero_new_1779022418718.png",
     caseStudy: "https://imran-buhari.netlify.app/sprint-maestro",
@@ -56,14 +57,14 @@ const projects = [
     name: "Tiqra",
     category: "AI Market Intelligence · Startups",
     year: "2026",
-    role: "Product Manager",
-    stack: ["Gemini", "Vercel"],
+    role: "Co-Founder & Product Manager",
+    stack: ["Team of 7", "Gemini", "Vercel"],
     headline: "Truth-first validation so founders stop building the wrong thing.",
     problem:
       "Founders commit months and money to ideas validated by friends, gut feel, and vanity signals.",
     approach:
-      "Designed a validation flow that blends verified human feedback with AI feasibility reports, ending in a clear Proceed / Pivot / Kill recommendation.",
-    outcome: "A live platform that gives founders a decision, not just data, before they build.",
+      "Co-founded Tiqra and lead product for a 7-person cross-functional team. Authored the PRD for its \"Truth Layer\", a real-time filter that screens out unreliable survey responses before AI feasibility analysis gives a Proceed / Pivot / Kill call.",
+    outcome: "At waitlist stage, with design, engineering and data workstreams driving toward public launch.",
     image:
       "https://imran-buhari.netlify.app/assets/images/tiqra_hero_landing_1779022691308.png",
     caseStudy: "https://imran-buhari.netlify.app/tiqra",
@@ -81,7 +82,8 @@ const projects = [
       "Smallholder farmers lack reliable market access, timely crop advice, and a way to diagnose disease early.",
     approach:
       "Interviewed 20+ smallholder farmers and agricultural students, then scoped and prioritised crop disease detection, localised advisory and a community feed to ship a demo-ready MVP in one weekend.",
-    outcome: "Won the hackathon and shipped a working mobile-first MVP.",
+    outcome:
+      "Ranked #1 of 10 teams at Prodcademy Demo Day, with 80% reported user satisfaction in early testing.",
     image:
       "https://imran-buhari.netlify.app/assets/images/agrolynk_hero_1779022333927.png",
     caseStudy: "https://imran-buhari.netlify.app/agrolynk",
@@ -98,7 +100,7 @@ const projects = [
     problem:
       "Student teams juggle deadlines, roles and tasks across scattered chats and files, and projects stall before the real work starts.",
     approach:
-      "Served as Product Owner for a remote, cross-functional team of 8, coordinating the work across Jira, WhatsApp and Google Drive, and delivered it as my Fuse Varsity capstone.",
+      "Served as Product Owner for a remote, cross-functional team of 8, coordinating the work across Jira, WhatsApp and Google Drive, and delivered it as my Fuse Varsity capstone. Ran a 30-respondent user survey and reshaped scope from the findings before development began.",
     outcome: "Tested by more than 5 student teams.",
     image: "",
     caseStudy: "",
@@ -206,7 +208,7 @@ const testimonials = [
     quote:
       "Working with Imran on AgroLynk showed me what focused execution looks like under pressure. He made the hard calls and kept us shipping.",
     name: "Teammate",
-    context: "AgroLynk Hackathon",
+    context: "AgroLynk team",
   },
   {
     quote:
@@ -430,7 +432,7 @@ function Hero() {
           </dd>
           <dt className="sr-only">Recognition</dt>
           <dd className="mt-1 flex items-center justify-end gap-1.5">
-            <Award className="h-3.5 w-3.5 text-gold" /> AgroLynk, hackathon winner 2025
+            <Award className="h-3.5 w-3.5 text-gold" /> AgroLynk, #1 of 10 at Prodcademy Demo Day
           </dd>
         </motion.dl>
       </div>

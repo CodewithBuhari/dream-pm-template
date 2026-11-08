@@ -3,12 +3,12 @@
 > Imran Buhari builds user-centered products with empathy at the core. He takes ideas from ideation to MVP launch, and every decision along the way is backed by real human data. Open to product manager roles (full-time or contract) and freelance projects; works remote.
 
 ## Products
-- [Sprint Maestro](https://sprintmaestro.lovable.app/): AI tool that turns PRDs into sprint-ready plans; cuts sprint-planning time by about 80%. Case study: https://imran-buhari.netlify.app/sprint-maestro
-- [Tiqra](https://tiqra-mvp.vercel.app/): validation platform giving founders a Proceed / Pivot / Kill recommendation from verified human feedback and AI feasibility reports. Case study: https://imran-buhari.netlify.app/tiqra
-- [AgroLynk](https://agrolynk.lovable.app/): mobile-first agritech MVP connecting smallholder farmers to markets, shaped by interviews with farmers and agricultural students; hackathon winner 2025. Case study: https://imran-buhari.netlify.app/agrolynk
+- [Sprint Maestro](https://sprintmaestro.lovable.app/): AI sprint planning tool (2025, team of 5); 10 early users reported an 80% reduction in time turning a PRD into a sprint-ready backlog. Case study: https://imran-buhari.netlify.app/sprint-maestro
+- [Tiqra](https://tiqra-mvp.vercel.app/): AI-powered startup validation platform; co-founder and product lead for a 7-person team; authored the PRD for its Truth Layer; waitlist stage. Case study: https://imran-buhari.netlify.app/tiqra
+- [AgroLynk](https://agrolynk.lovable.app/): AI agritech platform; research with 20+ smallholder farmers; ranked #1 of 10 teams at Prodcademy Demo Day; 80% reported user satisfaction in early testing. Case study: https://imran-buhari.netlify.app/agrolynk
 
-- ProjectPilot: planning assistant for student teams; Product Owner for a remote team of 8; Fuse Varsity capstone (2026).
-- Ceeravo: healthcare platform (in development) helping people reach the right hospital; leading a team of 23.
+- ProjectPilot: planning assistant for student teams; Product Owner for a remote team of 8; 30-respondent user survey reshaped scope; tested by 5+ student teams; Fuse Varsity capstone (2026).
+- Ceeravo: healthcare platform (post-MVP, in development) helping people reach the right hospital; leading a team of 23.
 - Edukate UIL: installable web-app learning platform replacing WhatsApp for a university faculty's course materials (2026).
 
 ## Resume
