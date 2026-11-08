@@ -20,7 +20,7 @@ import {
 
 const EMAIL = "buhariimran01@gmail.com";
 const LINKEDIN = "https://linkedin.com/in/imran-buhari-aa5aa838b";
-const PHOTO = "/images/imran-headshot.jpg";
+const PHOTO = "/images/imran-hero-wide.jpg";
 const HERO = "/images/imran-hero-wide.jpg";
 
 const navLinks = [
