@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import Lenis from "lenis";
+import { faq } from "./faq";
 import { motion, AnimatePresence, useScroll, useTransform, type MotionValue } from "framer-motion";
 import {
   ArrowUpRight,
@@ -344,7 +345,7 @@ function Hero() {
       <div className="relative mx-auto mt-auto grid w-full max-w-[1400px] gap-8 px-5 pb-10 md:grid-cols-[1fr_auto_1fr] md:px-10 md:pb-14">
         <motion.div {...enter(0.55)} className="max-w-sm self-end">
           <p className="text-[17px] leading-relaxed text-cream/85">
-            I take AI products from a fuzzy idea to a shipped MVP — discovery, specs, validation and launch.
+            I build user-centered products with empathy at the core. I take ideas from ideation to MVP launch, and every decision along the way is backed by real human data.
           </p>
           <div className="mt-6 flex flex-wrap gap-3">
             <a href="#work" className={btnGold}>
@@ -366,7 +367,7 @@ function Hero() {
           </dd>
           <dt className="sr-only">Location</dt>
           <dd className="mt-1 flex items-center justify-end gap-1.5">
-            <MapPin className="h-3.5 w-3.5" /> Nigeria · works remote
+            <MapPin className="h-3.5 w-3.5" /> Works remote
           </dd>
           <dt className="sr-only">Recognition</dt>
           <dd className="mt-1 flex items-center justify-end gap-1.5">
@@ -538,16 +539,23 @@ function About() {
         />
         <div className="px-6 py-14 md:px-12 md:py-16">
           <Heading light>
-            Builder first. <Serif>Learning in public.</Serif>
+            How I create <Serif>value.</Serif>
           </Heading>
           <div className="mt-8 max-w-[62ch] space-y-5 text-lg leading-relaxed text-ink/80">
             <p>
-              I'm a product manager based in Nigeria. My sweet spot is the messy beginning — where the problem isn't
-              clear yet and building the wrong thing costs the most.
+              I build products with the people I build them for. For AgroLynk, I spoke directly with farmers and
+              agricultural students, and what they told me shaped what we built.
             </p>
             <p>
-              I run the user interviews, write the PRD, and prototype the MVP with modern AI tooling myself, then share
-              what I learn each week on LinkedIn.
+              I have led teams at different scales. I led 23 people on Ceeravo, a healthcare product that helps people
+              reach the hospital they need, including hospitals with the right equipment for their treatment. It is
+              currently in development. I also served as Product Owner for a remote, cross-functional team of 8 on
+              ProjectPilot, a planning assistant for student teams, coordinating the work across Jira, WhatsApp and
+              Google Drive.
+            </p>
+            <p>
+              I care about clear problems, honest feedback and shipping early, so decisions are tested against real
+              people instead of assumptions.
             </p>
           </div>
 
@@ -635,6 +643,31 @@ function Writing() {
   );
 }
 
+function Faq() {
+  return (
+    <section id="faq" className="px-5 pb-24 md:pb-32">
+      <div className="mx-auto grid max-w-6xl gap-10 lg:grid-cols-[0.8fr_1.2fr]">
+        <Heading>
+          Questions, <Serif gold>answered.</Serif>
+        </Heading>
+        <div className="border-t border-cream/10">
+          {faq.map((f) => (
+            <details key={f.q} className="group border-b border-cream/10 py-5">
+              <summary className="flex min-h-11 cursor-pointer list-none items-center justify-between gap-6 text-lg font-medium [&::-webkit-details-marker]:hidden">
+                <h3>{f.q}</h3>
+                <span className="text-2xl leading-none text-gold transition-transform duration-200 ease-[var(--ease-out)] group-open:rotate-45">
+                  +
+                </span>
+              </summary>
+              <p className="mt-3 max-w-[62ch] text-[16px] leading-relaxed text-muted">{f.a}</p>
+            </details>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function Contact() {
   const [copied, setCopied] = useState(false);
   const copy = async () => {
@@ -677,7 +710,6 @@ function Contact() {
         <span>
           © {new Date().getFullYear()} Imran Buhari<span className="text-gold">.</span> Product Manager.
         </span>
-        <span>Portrait: Diplomat</span>
       </footer>
     </section>
   );
@@ -718,6 +750,7 @@ export function Portfolio() {
         <About />
         <Testimonials />
         <Writing />
+        <Faq />
         <Contact />
       </main>
     </div>

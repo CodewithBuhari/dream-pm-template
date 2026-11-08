@@ -1,0 +1,23 @@
+# Imran Buhari — Product Manager
+
+> Imran Buhari builds user-centered products with empathy at the core. He takes ideas from ideation to MVP launch, and every decision along the way is backed by real human data. Open to product manager roles (full-time or contract) and freelance projects; works remote.
+
+## Products
+- [Sprint Maestro](https://sprintmaestro.lovable.app/): AI tool that turns PRDs into sprint-ready plans; cuts sprint-planning time by about 80%. Case study: https://imran-buhari.netlify.app/sprint-maestro
+- [Tiqra](https://tiqra-mvp.vercel.app/): validation platform giving founders a Proceed / Pivot / Kill recommendation from verified human feedback and AI feasibility reports. Case study: https://imran-buhari.netlify.app/tiqra
+- [AgroLynk](https://agrolynk.lovable.app/): mobile-first agritech MVP connecting smallholder farmers to markets, shaped by interviews with farmers and agricultural students; hackathon winner 2025. Case study: https://imran-buhari.netlify.app/agrolynk
+
+## Leadership
+- Ceeravo: led a team of 23 on a healthcare product (in development) that helps people reach the right hospital, including hospitals with the right equipment for their treatment.
+- ProjectPilot: Product Owner for a remote, cross-functional team of 8 building a planning assistant for student teams (Jira, WhatsApp, Google Drive).
+
+## Skills
+Product strategy, AI product development, idea validation, PRDs and specs, user research (JTBD), product analytics, MVP development.
+
+## Certifications
+Product Management: IOTB Tech (2026), Fuse Varsity (2026), M4ace (2026), Prodcademy (2025).
+
+## Contact
+- Email: buhariimran01@gmail.com
+- LinkedIn: https://linkedin.com/in/imran-buhari-aa5aa838b
+- Site: https://imran-buhari-portfolio.vercel.app
