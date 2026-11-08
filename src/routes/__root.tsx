@@ -59,11 +59,11 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Imran Buhari — Product Manager" },
+      { title: "Imran Buhari — Product Manager · AI & 0→1 Products" },
       {
         name: "description",
         content:
-          "Imran Buhari is a product manager building AI-powered products, validation tools, and agritech solutions in Nigeria.",
+          "Imran Buhari is a product manager who takes AI products from idea to launch — strategy, PRDs, user research and validation. Creator of AgroLynk, Sprint Maestro and Tiqra. Open to full-time roles and freelance projects.",
       },
       { name: "author", content: "Imran Buhari" },
       { property: "og:title", content: "Imran Buhari — Product Manager" },
@@ -87,7 +87,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       {
         rel: "stylesheet",
-        href: "https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap",
+        href: "https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter+Tight:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap",
       },
     ],
   }),

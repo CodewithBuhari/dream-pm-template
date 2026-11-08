@@ -1,378 +1,595 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import Lenis from "lenis";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { motion, AnimatePresence } from "framer-motion";
 import {
-  Award,
-  Bot,
-  BookOpen,
-  PenTool,
-  Mail,
   ArrowUpRight,
-  Quote,
+  ArrowRight,
+  Award,
+  BarChart3,
+  Check,
+  Copy,
+  FileText,
+  FlaskConical,
   Linkedin,
+  Mail,
+  MapPin,
+  Menu,
+  Sparkles,
+  Target,
+  Users,
+  X,
 } from "lucide-react";
 
-gsap.registerPlugin(ScrollTrigger);
+/* ------------------------------------------------------------------ */
+/* Content                                                             */
+/* ------------------------------------------------------------------ */
 
 const EMAIL = "buhariimran01@gmail.com";
 const LINKEDIN = "https://linkedin.com/in/imran-buhari-aa5aa838b";
+const PHOTO = "https://imran-buhari.netlify.app/assets/images/imran-photo.jpg";
 
-const specialties = [
-  {
-    title: "Product Strategy",
-    body: "My core expertise. Defining direction, prioritizing ruthlessly, and aligning teams around what matters to ship successful products.",
-  },
-  {
-    title: "AI-Powered Products",
-    body: "Building tools that use artificial intelligence to make founders and product teams faster, sharper, and highly productive.",
-  },
-  {
-    title: "PRDs & Documentation",
-    body: "Writing clear, actionable product requirements, user stories, and specs that engineering and design teams actually love.",
-  },
-  {
-    title: "User Research",
-    body: "Jobs-To-Be-Done, user interviews, feedback loops, and synthesis that ground product decisions in real human behavior.",
-  },
-  {
-    title: "Idea Validation",
-    body: "Helping founders test startup ideas before spending time or money building the wrong thing, validating early and fast.",
-  },
-  {
-    title: "Product Analytics",
-    body: "Turning complex user behavior data into clear product decisions that move the needle on growth, engagement, and retention.",
-  },
+const navLinks = [
+  { label: "Work", href: "#work" },
+  { label: "Services", href: "#services" },
+  { label: "About", href: "#about" },
+  { label: "Writing", href: "#writing" },
+];
+
+const stats = [
+  { value: "3", label: "AI & mobile products shipped, idea → live" },
+  { value: "80%", label: "Less sprint-planning time with Sprint Maestro" },
+  { value: "1st", label: "Hackathon win with AgroLynk" },
+  { value: "4", label: "Product management certifications" },
 ];
 
 const projects = [
   {
-    name: "AgroLynk",
-    tag: "Agritech · Mobile MVP",
-    body: "A mobile-first Agritech MVP connecting farmers to markets. Features smart crop disease detection, a localized agricultural advisory system, and an interactive community feed for smallholder farmers.",
-    meta: ["Product Manager", "2025", "Figma & Lovable"],
-    image:
-      "https://imran-buhari.netlify.app/assets/images/agrolynk_hero_1779022333927.png",
-    caseStudy: "https://imran-buhari.netlify.app/agrolynk",
-    live: "https://agrolynk.lovable.app/",
-    typeLabel: "MOBILE MVP",
-  },
-  {
     name: "Sprint Maestro",
-    tag: "AI Productivity · PM Tool",
-    body: "An AI-powered tool that transforms raw Product Requirement Documents (PRDs) into comprehensive, sprint-ready plans in minutes. Cuts sprint planning time by 80% through automated backlog creation and estimations.",
-    meta: ["Product Manager", "2026", "ChatGPT & Notion"],
+    category: "AI Productivity · B2B Tool",
+    year: "2026",
+    role: "Product Manager",
+    stack: ["ChatGPT", "Notion", "Lovable"],
+    headline: "Turning raw PRDs into sprint-ready plans in minutes.",
+    problem:
+      "Teams lose hours every sprint converting PRDs into backlogs, stories and estimates — and the output is still inconsistent.",
+    approach:
+      "Mapped the planning workflow with PMs and engineers, defined the PRD → backlog pipeline, and shipped an AI MVP that generates stories, acceptance criteria and estimates.",
+    outcome: "Cuts sprint-planning time by ~80% with automated backlog creation and estimation.",
     image:
       "https://imran-buhari.netlify.app/assets/images/sprint_maestro_hero_new_1779022418718.png",
     caseStudy: "https://imran-buhari.netlify.app/sprint-maestro",
     live: "https://sprintmaestro.lovable.app/",
-    typeLabel: "PM TOOL",
+    tint: "#f3e6ea",
   },
   {
     name: "Tiqra",
-    tag: "AI Market Intelligence · Startups",
-    body: "A truth-first validation platform that replaces startup guesswork with verified human feedback and AI feasibility reports. Helps founders analyze market demand and determine feasibility — Proceed, Pivot, or Kill.",
-    meta: ["Product Manager", "2026", "Vercel & Gemini"],
+    category: "AI Market Intelligence · Startups",
+    year: "2026",
+    role: "Product Manager",
+    stack: ["Gemini", "Vercel"],
+    headline: "Truth-first validation so founders stop building the wrong thing.",
+    problem:
+      "Founders commit months and money to ideas validated by friends, gut feel, and vanity signals.",
+    approach:
+      "Designed a validation flow that blends verified human feedback with AI feasibility reports, ending in a clear Proceed / Pivot / Kill recommendation.",
+    outcome: "A live platform that gives founders a decision, not just data, before they build.",
     image:
       "https://imran-buhari.netlify.app/assets/images/tiqra_hero_landing_1779022691308.png",
     caseStudy: "https://imran-buhari.netlify.app/tiqra",
     live: "https://tiqra-mvp.vercel.app/",
-    typeLabel: "AI PLATFORM",
+    tint: "#f6ead5",
+  },
+  {
+    name: "AgroLynk",
+    category: "Agritech · Mobile MVP",
+    year: "2025",
+    role: "Product Manager",
+    stack: ["Figma", "Lovable"],
+    headline: "Connecting smallholder farmers to markets — built in a weekend.",
+    problem:
+      "Smallholder farmers lack reliable market access, timely crop advice, and a way to diagnose disease early.",
+    approach:
+      "Led discovery and scoping under hackathon pressure: crop-disease detection, localized advisory, and a community feed — prioritized ruthlessly to ship a demo-ready MVP.",
+    outcome: "Won the hackathon and shipped a working mobile-first MVP.",
+    image:
+      "https://imran-buhari.netlify.app/assets/images/agrolynk_hero_1779022333927.png",
+    caseStudy: "https://imran-buhari.netlify.app/agrolynk",
+    live: "https://agrolynk.lovable.app/",
+    tint: "#e3efe6",
   },
 ];
 
-const milestones = [
-  { icon: Award, title: "Hackathon Winner", body: "Recognized for innovative agritech solution with AgroLynk." },
-  { icon: Bot, title: "AI Product Builder", body: "Built AI-powered PM and validation tools used by real teams." },
-  { icon: BookOpen, title: "PM Cohort Member", body: "Active member of a structured PM learning cohort." },
-  { icon: PenTool, title: "Learning in Public", body: "Sharing product insights consistently on LinkedIn." },
+const services = [
+  {
+    icon: Target,
+    title: "Product Strategy",
+    body: "Clear direction, ruthless prioritization, and roadmaps that align teams around what matters.",
+  },
+  {
+    icon: Sparkles,
+    title: "AI Product Development",
+    body: "Taking AI-powered products from concept to MVP — scoping what the model should and shouldn't do.",
+  },
+  {
+    icon: FlaskConical,
+    title: "Idea Validation",
+    body: "Testing startup ideas with real users before you spend time and money building the wrong thing.",
+  },
+  {
+    icon: FileText,
+    title: "PRDs & Specs",
+    body: "Requirements, user stories and acceptance criteria that engineers and designers actually enjoy using.",
+  },
+  {
+    icon: Users,
+    title: "User Research",
+    body: "JTBD interviews, journey mapping and synthesis that ground decisions in real behavior.",
+  },
+  {
+    icon: BarChart3,
+    title: "Product Analytics",
+    body: "Turning usage data into decisions that move activation, engagement and retention.",
+  },
 ];
 
-const toolkit = [
-  {
-    label: "Product Skills",
-    items: [
-      "User Research",
-      "MVP Development",
-      "Product Thinking",
-      "Product Validation",
-      "Wireframing",
-      "Product Strategy",
-      "User Journey Mapping",
-      "Feature Prioritisation",
-    ],
-  },
-  {
-    label: "Tools & Platforms",
-    items: [
-      "Figma",
-      "Lovable",
-      "Notion",
-      "ChatGPT",
-      "Gemini",
-      "Canva",
-      "Google AI Studio",
-      "Antigravity",
-    ],
-  },
-  {
-    label: "Soft Skills",
-    items: ["Communication", "Collaboration", "Storytelling", "Critical Thinking", "Adaptability"],
-  },
+const process = [
+  { step: "01", title: "Discover", body: "Talk to users, map the problem, find the real job to be done." },
+  { step: "02", title: "Define", body: "Write the PRD, set success metrics, cut scope to the essential." },
+  { step: "03", title: "Validate", body: "Prototype fast, test with real people, kill bad ideas early." },
+  { step: "04", title: "Ship & learn", body: "Launch the MVP, read the numbers, iterate on what matters." },
 ];
+
+const toolkit = {
+  "Product": [
+    "Product Strategy",
+    "MVP Development",
+    "Product Validation",
+    "User Research",
+    "User Journey Mapping",
+    "Feature Prioritisation",
+    "Wireframing",
+  ],
+  "Tools": ["Figma", "Notion", "Lovable", "ChatGPT", "Gemini", "Google AI Studio", "Antigravity", "Canva"],
+  "Ways of working": ["Communication", "Collaboration", "Storytelling", "Critical Thinking", "Adaptability"],
+};
 
 const certifications = [
-  { year: "2025", title: "Product Manager", school: "Prodcademy" },
-  { year: "2026", title: "Product Manager", school: "M4ace" },
-  { year: "2026", title: "Product Manager", school: "Fuse Varsity" },
-  { year: "2026", title: "Product Manager", school: "IOTB Tech" },
-];
-
-const writing = [
-  {
-    title: "We built AgroLynk in a weekend and won — here's what happened",
-    href: "https://www.linkedin.com/posts/imran-buhari-aa5aa838b_agrolynk-graduation-demoday-ugcPost-7407217609806393345-qByy",
-  },
-  {
-    title: "A successful product isn't the one with the most features, the best design, or the biggest launch",
-    href: "https://www.linkedin.com/posts/imran-buhari-aa5aa838b_m4acelearningchallenge-learninginpublic-productmanagement-activity-7453212937407721472-L1fo",
-  },
-  {
-    title: "Check the numbers to see where people are struggling. Then talk to people to understand why",
-    href: "https://www.linkedin.com/posts/imran-buhari-aa5aa838b_m4acelearningchallenge-learninginpublic-productmanagement-activity-7449210462715473920-zPfY",
-  },
-  {
-    title: "Every step in onboarding is a moment of trust",
-    href: "https://www.linkedin.com/posts/imran-buhari-aa5aa838b_theproductnotebook-activity-7447779169721208832-xJ7O",
-  },
-  {
-    title: "You're not building an MVP to impress people. You're building it to be wrong early and correct it quickly",
-    href: "https://www.linkedin.com/posts/imran-buhari-aa5aa838b_m4acelearningchallenge-learninginpublic-productmanagement-activity-7446266706613686272-2GlV",
-  },
-  {
-    title: "I used to think the difference between a product and a feature was obvious",
-    href: "https://www.linkedin.com/posts/imran-buhari-aa5aa838b_m4acelearningchallenge-learninginpublic-productmanagement-activity-7445926281000497152-wNfH",
-  },
+  { year: "2026", title: "Product Management", school: "IOTB Tech" },
+  { year: "2026", title: "Product Management", school: "Fuse Varsity" },
+  { year: "2026", title: "Product Management", school: "M4ace" },
+  { year: "2025", title: "Product Management", school: "Prodcademy" },
 ];
 
 const testimonials = [
   {
     quote:
       "Imran approaches product with a level of clarity and intentionality that's rare. He asks the right questions before writing a single line of spec.",
-    initial: "A",
     name: "Cohort Member",
     context: "PM Learning Cohort",
   },
   {
     quote:
       "Working with Imran on AgroLynk showed me what focused execution looks like under pressure. He made the hard calls and kept us shipping.",
-    initial: "T",
     name: "Teammate",
     context: "AgroLynk Hackathon",
   },
   {
     quote:
       "Sprint Maestro saved our team hours every sprint. The backlog quality improved noticeably and our engineers stopped pushing back on estimates.",
-    initial: "U",
     name: "Early User",
     context: "Sprint Maestro Beta",
   },
 ];
 
-function AsteriskStar() {
+const writing = [
+  {
+    title: "We built AgroLynk in a weekend and won — here's what happened",
+    tag: "Case story",
+    href: "https://www.linkedin.com/posts/imran-buhari-aa5aa838b_agrolynk-graduation-demoday-ugcPost-7407217609806393345-qByy",
+  },
+  {
+    title: "You're not building an MVP to impress people. You're building it to be wrong early",
+    tag: "MVPs",
+    href: "https://www.linkedin.com/posts/imran-buhari-aa5aa838b_m4acelearningchallenge-learninginpublic-productmanagement-activity-7446266706613686272-2GlV",
+  },
+  {
+    title: "Check the numbers to see where people struggle. Then talk to people to understand why",
+    tag: "Analytics",
+    href: "https://www.linkedin.com/posts/imran-buhari-aa5aa838b_m4acelearningchallenge-learninginpublic-productmanagement-activity-7449210462715473920-zPfY",
+  },
+  {
+    title: "Every step in onboarding is a moment of trust",
+    tag: "Onboarding",
+    href: "https://www.linkedin.com/posts/imran-buhari-aa5aa838b_theproductnotebook-activity-7447779169721208832-xJ7O",
+  },
+  {
+    title: "A successful product isn't the one with the most features or the biggest launch",
+    tag: "Strategy",
+    href: "https://www.linkedin.com/posts/imran-buhari-aa5aa838b_m4acelearningchallenge-learninginpublic-productmanagement-activity-7453212937407721472-L1fo",
+  },
+  {
+    title: "I used to think the difference between a product and a feature was obvious",
+    tag: "Fundamentals",
+    href: "https://www.linkedin.com/posts/imran-buhari-aa5aa838b_m4acelearningchallenge-learninginpublic-productmanagement-activity-7445926281000497152-wNfH",
+  },
+];
+
+/* ------------------------------------------------------------------ */
+/* Primitives                                                          */
+/* ------------------------------------------------------------------ */
+
+const ease = [0.22, 1, 0.36, 1] as const;
+
+function Reveal({
+  children,
+  delay = 0,
+  className,
+}: {
+  children: ReactNode;
+  delay?: number;
+  className?: string;
+}) {
   return (
-    <div className="w-full h-full animate-[spin_30s_linear_infinite] flex items-center justify-center pointer-events-none select-none">
-      <svg viewBox="0 0 400 400" className="w-full h-full max-w-[420px]">
-        <defs>
-          <linearGradient id="star-grad" x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0%" stopColor="#ff4d8d" />
-            <stop offset="50%" stopColor="#a855f7" />
-            <stop offset="100%" stopColor="#22d3ee" />
-          </linearGradient>
-        </defs>
-        <g stroke="url(#star-grad)" strokeWidth="2" fill="none" transform="translate(200 200)">
-          {Array.from({ length: 8 }).map((_, i) => (
-            <rect
-              key={i}
-              x="-5"
-              y="-175"
-              width="10"
-              height="350"
-              rx="5"
-              transform={`rotate(${(360 / 8) * i})`}
-            />
-          ))}
-        </g>
-      </svg>
+    <motion.div
+      className={className}
+      initial={{ opacity: 0, y: 28 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-80px" }}
+      transition={{ duration: 0.7, delay, ease }}
+    >
+      {children}
+    </motion.div>
+  );
+}
+
+function Eyebrow({ children, dark }: { children: ReactNode; dark?: boolean }) {
+  return (
+    <div
+      className={`flex items-center gap-3 font-mono text-[11px] uppercase tracking-[0.18em] ${
+        dark ? "text-white/50" : "text-muted"
+      }`}
+    >
+      <span className="h-px w-8 bg-accent" />
+      {children}
     </div>
   );
 }
 
-function ScrollRevealText({ text }: { text: string }) {
-  const containerRef = useRef<HTMLParagraphElement>(null);
-
-  useEffect(() => {
-    if (!containerRef.current) return;
-    const words = containerRef.current.querySelectorAll(".reveal-word");
-
-    const tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: containerRef.current,
-        start: "top 80%",
-        end: "bottom 55%",
-        scrub: 0.5,
-      },
-    });
-
-    tl.to(words, {
-      opacity: 1,
-      stagger: 0.05,
-      ease: "none",
-    });
-  }, [text]);
-
-  const words = text.split(" ");
+function SectionHead({
+  eyebrow,
+  title,
+  sub,
+  dark,
+}: {
+  eyebrow: string;
+  title: ReactNode;
+  sub?: string;
+  dark?: boolean;
+}) {
   return (
-    <p
-      ref={containerRef}
-      className="text-xl md:text-3xl lg:text-4xl font-normal leading-relaxed text-black tracking-tight"
-    >
-      {words.map((word, i) => (
-        <span key={i} className="reveal-word opacity-15 mr-2.5 inline-block">
-          {word}
-        </span>
-      ))}
-    </p>
+    <Reveal className="max-w-3xl">
+      <Eyebrow dark={dark}>{eyebrow}</Eyebrow>
+      <h2 className="mt-5 text-[clamp(2.2rem,5vw,4rem)] font-semibold leading-[1.02] tracking-[-0.035em]">
+        {title}
+      </h2>
+      {sub && (
+        <p className={`mt-5 max-w-xl text-lg leading-relaxed ${dark ? "text-white/60" : "text-muted"}`}>
+          {sub}
+        </p>
+      )}
+    </Reveal>
   );
 }
 
-function Nav({ open, setOpen }: { open: boolean; setOpen: (v: boolean) => void }) {
+function PrimaryButton({ href, children }: { href: string; children: ReactNode }) {
   return (
-    <>
-      <header className="fixed top-0 left-0 right-0 z-40 bg-transparent mix-blend-difference pointer-events-none">
-        <div className="max-w-[1400px] mx-auto flex items-center justify-between px-6 md:px-10 h-16 md:h-20 pointer-events-auto">
+    <a
+      href={href}
+      className="group inline-flex items-center gap-2 rounded-full bg-ink px-6 py-3.5 text-sm font-medium text-white transition hover:bg-accent"
+    >
+      {children}
+      <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+    </a>
+  );
+}
+
+function GhostButton({ href, children, external }: { href: string; children: ReactNode; external?: boolean }) {
+  return (
+    <a
+      href={href}
+      {...(external ? { target: "_blank", rel: "noreferrer" } : {})}
+      className="inline-flex items-center gap-2 rounded-full border border-ink/15 px-6 py-3.5 text-sm font-medium transition hover:border-ink hover:bg-white"
+    >
+      {children}
+    </a>
+  );
+}
+
+function Available({ className = "" }: { className?: string }) {
+  return (
+    <span className={`inline-flex items-center gap-2 ${className}`}>
+      <span className="pulse-dot h-2 w-2 rounded-full bg-success" />
+      Available for work
+    </span>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/* Sections                                                            */
+/* ------------------------------------------------------------------ */
+
+function Nav() {
+  const [scrolled, setScrolled] = useState(false);
+  const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 24);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  return (
+    <header className="fixed inset-x-0 top-0 z-50 px-4 pt-4">
+      <div
+        className={`mx-auto flex h-14 max-w-6xl items-center justify-between rounded-full px-5 transition-all duration-300 ${
+          scrolled ? "border border-ink/10 bg-paper/80 shadow-sm backdrop-blur-xl" : "border border-transparent"
+        }`}
+      >
+        <a href="#top" className="text-[15px] font-semibold tracking-tight">
+          Imran Buhari<span className="text-accent">.</span>
+        </a>
+        <nav className="hidden items-center gap-8 md:flex">
+          {navLinks.map((l) => (
+            <a key={l.href} href={l.href} className="text-sm text-muted transition hover:text-ink">
+              {l.label}
+            </a>
+          ))}
+        </nav>
+        <div className="flex items-center gap-3">
+          <Available className="hidden font-mono text-[11px] uppercase tracking-wider text-muted lg:inline-flex" />
           <a
-            href="#top"
-            className="font-display font-extrabold text-2xl tracking-tight text-white select-none hover:opacity-85 transition-opacity cursor-pointer"
+            href="#contact"
+            className="hidden rounded-full bg-ink px-4 py-2 text-sm font-medium text-white transition hover:bg-accent sm:inline-block"
           >
-            IB
+            Hire me
           </a>
           <button
             onClick={() => setOpen(!open)}
-            aria-label={open ? "Close Menu" : "Open Menu"}
-            className="relative w-8 h-8 flex flex-col justify-center items-end gap-1.5 cursor-pointer group"
+            aria-label={open ? "Close menu" : "Open menu"}
+            aria-expanded={open}
+            className="grid h-9 w-9 place-items-center rounded-full border border-ink/10 md:hidden"
           >
-            {open ? (
-              <div className="relative w-6 h-6 flex items-center justify-center">
-                <span className="absolute w-6 h-[1.5px] bg-white rotate-45" />
-                <span className="absolute w-6 h-[1.5px] bg-white -rotate-45" />
-              </div>
-            ) : (
-              <>
-                <span className="block w-6 h-[1.5px] bg-white" />
-                <span className="block w-4 h-[1.5px] bg-white group-hover:w-6 transition-all duration-300" />
-              </>
-            )}
+            {open ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
           </button>
         </div>
-      </header>
+      </div>
 
       <AnimatePresence>
         {open && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
-            className="fixed inset-0 z-30 bg-black flex flex-col items-center justify-center"
+          <motion.nav
+            initial={{ opacity: 0, y: -8 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -8 }}
+            transition={{ duration: 0.2 }}
+            className="mx-auto mt-2 flex max-w-6xl flex-col rounded-3xl border border-ink/10 bg-paper p-3 shadow-lg md:hidden"
           >
-            <nav className="flex flex-col gap-8 font-display text-4xl md:text-6xl font-bold text-center tracking-wider">
-              {["HOME", "PROJECTS", "CONTACT"].map((link, i) => {
-                const hrefs = ["#top", "#work", "#contact"];
-                return (
-                  <motion.a
-                    key={link}
-                    initial={{ y: 20, opacity: 0 }}
-                    animate={{ y: 0, opacity: 1 }}
-                    exit={{ y: 20, opacity: 0 }}
-                    transition={{ delay: i * 0.1, duration: 0.3 }}
-                    href={hrefs[i]}
-                    onClick={() => setOpen(false)}
-                    className="text-white hover:text-white/60 transition-colors cursor-pointer"
-                  >
-                    {link}
-                  </motion.a>
-                );
-              })}
-            </nav>
-          </motion.div>
+            {[...navLinks, { label: "Contact", href: "#contact" }].map((l) => (
+              <a
+                key={l.href}
+                href={l.href}
+                onClick={() => setOpen(false)}
+                className="rounded-2xl px-4 py-3 text-lg font-medium hover:bg-paper-2"
+              >
+                {l.label}
+              </a>
+            ))}
+          </motion.nav>
         )}
       </AnimatePresence>
-    </>
+    </header>
   );
 }
 
 function Hero() {
   return (
-    <section
-      id="top"
-      className="relative h-screen w-full flex items-center justify-center px-8 md:px-16 overflow-hidden bg-black"
-    >
-      <div className="max-w-[1400px] w-full mx-auto grid lg:grid-cols-[1.25fr_0.75fr] gap-12 items-center">
-        <div className="flex flex-col items-start text-left z-10">
-          <div className="inline-block relative mb-8">
-            <span className="font-display text-sm md:text-base font-bold tracking-[0.2em] uppercase text-white">
-              IMRAN BUHARI
+    <section id="top" className="relative overflow-hidden px-5 pb-16 pt-32 md:pb-24 md:pt-40">
+      <div className="grain pointer-events-none absolute inset-0 [mask-image:radial-gradient(ellipse_at_top,black,transparent_70%)]" />
+      <div className="relative mx-auto grid max-w-6xl items-center gap-14 lg:grid-cols-[1.35fr_0.65fr]">
+        <div>
+          <motion.div
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, ease }}
+            className="flex flex-wrap items-center gap-x-4 gap-y-2 font-mono text-[11px] uppercase tracking-[0.16em] text-muted"
+          >
+            <span className="rounded-full border border-ink/10 bg-white/60 px-3 py-1.5">
+              <Available />
             </span>
-            <div className="h-[2px] w-full bg-brand-gradient mt-1" />
-          </div>
+            <span className="inline-flex items-center gap-1.5">
+              <MapPin className="h-3.5 w-3.5" /> Nigeria · Remote-friendly
+            </span>
+          </motion.div>
 
-          <h1 className="font-display font-extrabold leading-[0.9] tracking-tight text-[clamp(2.5rem,8vw,6.5rem)] uppercase select-none">
-            <span className="block text-white">Product</span>
-            <span className="block text-outline text-white">& Manager</span>
-          </h1>
+          <motion.h1
+            initial={{ opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.08, ease }}
+            className="mt-8 text-[clamp(2.75rem,7.2vw,6rem)] font-semibold leading-[0.95] tracking-[-0.045em]"
+          >
+            Product manager who takes{" "}
+            <span className="font-serif font-normal italic tracking-[-0.02em] text-accent">AI ideas</span> from
+            whiteboard to <span className="font-serif font-normal italic tracking-[-0.02em]">shipped.</span>
+          </motion.h1>
 
-          <p className="mt-8 max-w-xl text-lg md:text-xl text-white/50 leading-relaxed font-sans">
-            I build products that solve real problems. Currently obsessed with AI,
-            validation tools, and what's next.
-          </p>
+          <motion.p
+            initial={{ opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.18, ease }}
+            className="mt-8 max-w-xl text-lg leading-relaxed text-muted md:text-xl"
+          >
+            I'm Imran Buhari. I help startups and product teams validate what to build, write the specs
+            that get it built, and ship AI-powered products users actually come back to.
+          </motion.p>
 
-          <div className="mt-10">
-            <a
-              href="#contact"
-              className="gradient-border rounded-full px-8 py-4 font-display font-bold text-xs tracking-widest uppercase text-white hover:bg-white/5 transition inline-block cursor-pointer"
-            >
-              LET'S TALK
-            </a>
-          </div>
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.28, ease }}
+            className="mt-10 flex flex-wrap gap-3"
+          >
+            <PrimaryButton href="#work">See case studies</PrimaryButton>
+            <GhostButton href={`mailto:${EMAIL}?subject=Let's%20work%20together`}>
+              <Mail className="h-4 w-4" /> Start a conversation
+            </GhostButton>
+          </motion.div>
         </div>
 
-        <div className="relative w-full aspect-square max-w-[400px] lg:max-w-[500px] mx-auto hidden lg:flex items-center justify-center">
-          <AsteriskStar />
-        </div>
+        <motion.div
+          initial={{ opacity: 0, scale: 0.96 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 1, delay: 0.2, ease }}
+          className="relative mx-auto w-full max-w-[340px]"
+        >
+          <div className="absolute -inset-3 rotate-3 rounded-[2rem] bg-accent-soft" />
+          <div className="relative overflow-hidden rounded-[1.75rem] border border-ink/10 bg-paper-2">
+            <img
+              src={PHOTO}
+              alt="Portrait of Imran Buhari"
+              className="aspect-[4/5] w-full object-cover object-top"
+              loading="eager"
+            />
+          </div>
+          <div className="absolute -bottom-5 -left-6 flex items-center gap-3 rounded-2xl border border-ink/10 bg-white px-4 py-3 shadow-xl shadow-ink/5">
+            <span className="grid h-9 w-9 place-items-center rounded-full bg-ink text-white">
+              <Award className="h-4 w-4" />
+            </span>
+            <div className="leading-tight">
+              <div className="text-sm font-semibold">Hackathon winner</div>
+              <div className="text-xs text-muted">AgroLynk · 2025</div>
+            </div>
+          </div>
+        </motion.div>
+      </div>
+
+      <div className="relative mx-auto mt-20 grid max-w-6xl grid-cols-2 border-t border-line md:mt-28 md:grid-cols-4">
+        {stats.map((s, i) => (
+          <Reveal
+            key={s.label}
+            delay={i * 0.06}
+            className={`py-7 pr-6 ${i % 2 === 1 ? "pl-6 border-l border-line" : ""} ${
+              i >= 2 ? "border-t border-line md:border-t-0" : ""
+            } ${i === 2 ? "md:pl-6 md:border-l" : ""}`}
+          >
+            <div className="text-4xl font-semibold tracking-[-0.04em] md:text-5xl">{s.value}</div>
+            <div className="mt-2 max-w-[14rem] text-sm text-muted">{s.label}</div>
+          </Reveal>
+        ))}
       </div>
     </section>
   );
 }
 
-function About() {
-  const aboutPara1 =
-    "👋 Hello! I'm Imran Buhari — a creative and driven product manager with a passion for building AI-powered products. I thrive on turning imaginative ideas into digital realities, constantly blending product strategy, user insights, and technology. Based in Nigeria, I specialize in crafting engaging products and digital platforms.";
-  const aboutPara2 =
-    "My approach combines strategic thinking with robust, user-centered design. I'm highly motivated and dedicated to staying at the forefront of modern product practices, ensuring every product I touch is built with the highest standards. I have a strong foundation in idea validation and product analytics, plus a keen eye for simple design and user-centered interfaces.";
-
+function ToolsMarquee() {
+  const items = [...toolkit.Tools, "PRDs", "JTBD", "User Interviews", "Roadmapping", "A/B Testing"];
+  const row = [...items, ...items];
   return (
-    <section id="about" className="bg-white text-black px-8 md:px-24 py-24 md:py-36 rounded-t-[48px] md:rounded-t-[80px]">
-      <div className="max-w-[1200px] mx-auto">
-        <ScrollRevealText text={aboutPara1} />
-        <div className="h-8" />
-        <ScrollRevealText text={aboutPara2} />
-
-        <div className="mt-28 border-t border-black/10 pt-8">
-          <span className="font-display text-xs md:text-sm font-bold tracking-[0.2em] uppercase text-black/50">
-            SERVICES IN DETAIL
+    <div className="overflow-hidden border-y border-line bg-paper-2/60 py-5">
+      <div className="animate-marquee flex w-max gap-10">
+        {row.map((t, i) => (
+          <span key={i} className="flex items-center gap-10 font-mono text-xs uppercase tracking-[0.18em] text-muted">
+            {t}
+            <span className="h-1 w-1 rounded-full bg-accent" />
           </span>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function Work() {
+  return (
+    <section id="work" className="px-5 py-24 md:py-36">
+      <div className="mx-auto max-w-6xl">
+        <div className="flex flex-wrap items-end justify-between gap-6">
+          <SectionHead
+            eyebrow="Selected work"
+            title={
+              <>
+                Products I've taken from <span className="font-serif font-normal italic">zero to live.</span>
+              </>
+            }
+            sub="Each one started as a fuzzy problem. Here's what I found, what I decided, and what shipped."
+          />
+        </div>
+
+        <div className="mt-16 flex flex-col gap-8 md:gap-10">
+          {projects.map((p, i) => (
+            <Reveal key={p.name}>
+              <article className="group grid overflow-hidden rounded-[2rem] border border-ink/10 bg-white lg:grid-cols-2">
+                <div
+                  className={`relative flex items-center justify-center p-6 md:p-10 ${i % 2 ? "lg:order-2" : ""}`}
+                  style={{ background: p.tint }}
+                >
+                  <span className="absolute left-6 top-6 font-mono text-[11px] uppercase tracking-[0.18em] text-ink/50">
+                    0{i + 1} / 0{projects.length}
+                  </span>
+                  <img
+                    src={p.image}
+                    alt={`${p.name} product screenshot`}
+                    loading="lazy"
+                    className="mt-6 w-full rounded-xl border border-ink/5 shadow-2xl shadow-ink/10 transition-transform duration-700 group-hover:-translate-y-1 group-hover:scale-[1.015]"
+                  />
+                </div>
+
+                <div className="flex flex-col p-7 md:p-10">
+                  <div className="font-mono text-[11px] uppercase tracking-[0.16em] text-accent">{p.category}</div>
+                  <h3 className="mt-3 text-4xl font-semibold tracking-[-0.035em]">{p.name}</h3>
+                  <p className="mt-2 text-lg text-muted">{p.headline}</p>
+
+                  <dl className="mt-8 space-y-5 text-[15px] leading-relaxed">
+                    {[
+                      ["Problem", p.problem],
+                      ["What I did", p.approach],
+                      ["Outcome", p.outcome],
+                    ].map(([k, v]) => (
+                      <div key={k} className="grid gap-1 sm:grid-cols-[7rem_1fr] sm:gap-4">
+                        <dt className="font-mono text-[11px] uppercase tracking-[0.14em] text-muted sm:pt-1">{k}</dt>
+                        <dd className={k === "Outcome" ? "font-medium" : "text-ink/80"}>{v}</dd>
+                      </div>
+                    ))}
+                  </dl>
+
+                  <div className="mt-8 flex flex-wrap gap-2">
+                    {[p.role, p.year, ...p.stack].map((t) => (
+                      <span key={t} className="rounded-full bg-paper px-3 py-1 text-xs text-muted">
+                        {t}
+                      </span>
+                    ))}
+                  </div>
+
+                  <div className="mt-auto flex flex-wrap gap-3 pt-8">
+                    <a
+                      href={p.caseStudy}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="inline-flex items-center gap-2 rounded-full bg-ink px-5 py-3 text-sm font-medium text-white transition hover:bg-accent"
+                    >
+                      Read case study <ArrowUpRight className="h-4 w-4" />
+                    </a>
+                    <a
+                      href={p.live}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="inline-flex items-center gap-2 rounded-full border border-ink/15 px-5 py-3 text-sm font-medium transition hover:border-ink"
+                    >
+                      Try it live <ArrowUpRight className="h-4 w-4" />
+                    </a>
+                  </div>
+                </div>
+              </article>
+            </Reveal>
+          ))}
         </div>
       </div>
     </section>
@@ -380,388 +597,175 @@ function About() {
 }
 
 function Services() {
-  const cardStyles = [
-    { bg: "bg-black text-white", num: "text-white/40", body: "text-white/60", stroke: "text-outline text-white" },
-    { bg: "bg-[#f4f4f4] text-black", num: "text-black/30", body: "text-black/60", stroke: "text-outline text-black" },
-    { bg: "bg-white text-black", num: "text-black/30", body: "text-black/60", stroke: "text-outline text-black" },
-    { bg: "bg-black text-white", num: "text-white/40", body: "text-white/60", stroke: "text-outline text-white" },
-    { bg: "bg-[#f4f4f4] text-black", num: "text-black/30", body: "text-black/60", stroke: "text-outline text-black" },
-    { bg: "bg-white text-black", num: "text-black/30", body: "text-black/60", stroke: "text-outline text-black" },
-  ];
-
   return (
-    <section className="relative">
-      {specialties.map((s, i) => {
-        const style = cardStyles[i];
-        const parts = s.title.split(" ");
-        const firstPart = parts.slice(0, Math.ceil(parts.length / 2)).join(" ");
-        const secondPart = parts.slice(Math.ceil(parts.length / 2)).join(" ");
+    <section id="services" className="rounded-t-[2.5rem] bg-ink px-5 py-24 text-white md:rounded-t-[4rem] md:py-36">
+      <div className="mx-auto max-w-6xl">
+        <SectionHead
+          dark
+          eyebrow="How I can help"
+          title={
+            <>
+              Hire me for a role, <span className="font-serif font-normal italic text-accent">or a project.</span>
+            </>
+          }
+          sub="Joining your team full-time, or partnering with founders on a defined engagement — the craft is the same."
+        />
 
-        return (
-          <div
-            key={s.title}
-            className={`w-full py-20 md:py-28 px-8 md:px-24 ${style.bg} border-b border-black/5`}
-          >
-            <div className="max-w-[1200px] mx-auto grid md:grid-cols-[1.1fr_0.9fr] gap-8 md:gap-16 items-start">
-              <div className="flex items-start gap-6">
-                <span className={`font-display text-base md:text-lg font-bold ${style.num} select-none`}>
-                  {String(i + 1).padStart(2, "0")}
-                </span>
-                <h3 className="font-display text-3xl md:text-5xl lg:text-6xl font-extrabold uppercase leading-tight tracking-tight">
-                  <span className="block">{firstPart}</span>
-                  {secondPart && <span className={`block ${style.stroke}`}>{secondPart}</span>}
-                </h3>
-              </div>
-              <p className={`font-sans text-base md:text-lg leading-relaxed ${style.body}`}>
-                {s.body}
+        <div className="mt-14 grid gap-4 md:grid-cols-2">
+          <Reveal>
+            <div className="h-full rounded-3xl border border-white/10 bg-white/[0.04] p-8">
+              <div className="font-mono text-[11px] uppercase tracking-[0.16em] text-white/50">For companies</div>
+              <h3 className="mt-3 text-2xl font-semibold tracking-tight">Product Manager / Associate PM</h3>
+              <p className="mt-3 text-white/60">
+                Full-time or contract. I bring discovery, clear specs and a bias for shipping to AI, SaaS and
+                emerging-market products.
               </p>
             </div>
+          </Reveal>
+          <Reveal delay={0.08}>
+            <div className="h-full rounded-3xl bg-accent p-8 text-white">
+              <div className="font-mono text-[11px] uppercase tracking-[0.16em] text-white/70">For founders</div>
+              <h3 className="mt-3 text-2xl font-semibold tracking-tight">Validate → spec → MVP</h3>
+              <p className="mt-3 text-white/85">
+                Fixed-scope engagements: idea validation sprints, PRD & roadmap packages, and AI MVP builds with
+                no-code / AI tooling.
+              </p>
+            </div>
+          </Reveal>
+        </div>
+
+        <div className="mt-4 grid gap-px overflow-hidden rounded-3xl border border-white/10 bg-white/10 sm:grid-cols-2 lg:grid-cols-3">
+          {services.map((s, i) => (
+            <Reveal key={s.title} delay={(i % 3) * 0.06} className="bg-ink">
+              <div className="group h-full p-8 transition hover:bg-white/[0.03]">
+                <s.icon className="h-6 w-6 text-accent" strokeWidth={1.75} />
+                <h4 className="mt-6 text-lg font-semibold">{s.title}</h4>
+                <p className="mt-2 text-[15px] leading-relaxed text-white/55">{s.body}</p>
+              </div>
+            </Reveal>
+          ))}
+        </div>
+
+        <div className="mt-24">
+          <Reveal>
+            <Eyebrow dark>How I work</Eyebrow>
+          </Reveal>
+          <div className="mt-8 grid gap-8 md:grid-cols-4">
+            {process.map((p, i) => (
+              <Reveal key={p.step} delay={i * 0.08}>
+                <div className="border-t border-white/15 pt-5">
+                  <div className="font-mono text-xs text-accent">{p.step}</div>
+                  <h4 className="mt-3 text-xl font-semibold">{p.title}</h4>
+                  <p className="mt-2 text-[15px] leading-relaxed text-white/55">{p.body}</p>
+                </div>
+              </Reveal>
+            ))}
           </div>
-        );
-      })}
+        </div>
+      </div>
     </section>
   );
 }
 
-function SelectedWork() {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const scrollSectionRef = useRef<HTMLDivElement>(null);
-  const [activeIndex, setActiveIndex] = useState<number>(0);
-
-  useEffect(() => {
-    if (!containerRef.current || !scrollSectionRef.current) return;
-
-    const mm = gsap.matchMedia();
-
-    mm.add("(min-width: 1024px)", () => {
-      const scrollWidth = scrollSectionRef.current!.scrollWidth;
-      const viewportWidth = window.innerWidth;
-      const scrollDistance = scrollWidth - viewportWidth;
-
-      if (scrollDistance > 0) {
-        const pin = gsap.to(scrollSectionRef.current, {
-          x: -scrollDistance,
-          ease: "none",
-          scrollTrigger: {
-            trigger: containerRef.current,
-            start: "top top",
-            end: `+=${scrollDistance * 1.2}`,
-            scrub: 0.5,
-            pin: true,
-            invalidateOnRefresh: true,
-            onUpdate: (self) => {
-              const progress = self.progress;
-              const idx = Math.min(
-                projects.length - 1,
-                Math.max(0, Math.floor(progress * projects.length))
-              );
-              setActiveIndex(idx);
-            },
-          },
-        });
-
-        return () => {
-          pin.scrollTrigger?.kill();
-          pin.kill();
-        };
-      }
-    });
-
-    return () => {
-      mm.revert();
-    };
-  }, []);
-
-  const cardBgs = [
-    "bg-[#f5c6a5]", // AgroLynk (peach matching screenshot 100%)
-    "bg-[#d7bbf5]", // Sprint Maestro (purple matching screenshot 100%)
-    "bg-[#e6e6e6]", // Tiqra (gray matching screenshot 100%)
-  ];
-
+function About() {
   return (
-    <div
-      ref={containerRef}
-      id="work"
-      className="relative bg-white lg:h-screen flex flex-col justify-between py-16 lg:py-24"
-    >
-      {/* Header */}
-      <div className="w-full px-8 md:px-24 flex flex-col md:flex-row md:items-end justify-between gap-6 z-20">
-        <div className="flex flex-col items-start text-left">
-          <span className="font-sans text-[13px] md:text-[14px] font-bold tracking-wider text-black uppercase">
-            SELECTED WORK
-          </span>
-          <p className="max-w-[400px] text-gray-500 text-xs md:text-sm font-sans mt-2.5 leading-relaxed">
-            A showcase of my selected projects—designed to inspire, engage, and deliver real results.
-          </p>
-        </div>
-        <div>
-          <div className="p-[1.5px] rounded-full bg-gradient-to-r from-pink-500 via-purple-500 to-cyan-500 hover:scale-[1.02] transition-transform duration-300">
-            <a
-              href={LINKEDIN}
-              target="_blank"
-              rel="noreferrer"
-              className="block bg-white text-black font-sans font-bold text-[10px] md:text-[11px] tracking-wider uppercase px-6 py-2.5 rounded-full select-none"
-            >
-              EXPLORE ALL
-            </a>
-          </div>
-        </div>
-      </div>
-
-      {/* Horizontal Scroll Track — no overflow-hidden so GSAP translateX isn't clipped */}
-      <div
-        ref={scrollSectionRef}
-        className="flex flex-col lg:flex-row gap-6 lg:gap-8 items-stretch lg:items-center overflow-x-auto lg:overflow-x-visible snap-y lg:snap-x snap-mandatory w-full h-auto pt-6 pb-6 lg:pt-0 lg:pb-0 pl-8 md:pl-24"
-      >
-        {projects.map((p, i) => {
-          const isActive = activeIndex === i;
-          return (
-            <div
-              key={p.name}
-              onClick={() => {
-                if (window.innerWidth < 1024) {
-                  setActiveIndex(activeIndex === i ? -1 : i);
-                }
-              }}
-              className={`w-[85vw] md:w-[75vw] lg:w-[42vw] max-w-[580px] aspect-[1.5/1] flex-shrink-0 rounded-3xl ${cardBgs[i]} p-6 md:p-8 flex items-center justify-center relative overflow-hidden snap-center cursor-pointer group hover:shadow-2xl transition-all duration-500`}
-            >
-              {/* Pill badge in top-right */}
-              <span className="absolute top-5 right-5 bg-black text-white text-[9px] md:text-[10px] font-bold px-3.5 py-1.5 rounded-full uppercase tracking-wider select-none z-10">
-                {p.typeLabel}
-              </span>
-
-              {/* Centered Mockup */}
-              <div className="w-[85%] h-[80%] flex items-center justify-center">
-                {p.tag.toLowerCase().includes("mobile") ? (
-                  <div className="relative h-[85%] aspect-[9/19] rounded-[24px] overflow-hidden border-[4px] border-black bg-white shadow-2xl transition-transform duration-500 group-hover:scale-[1.02]">
-                    <div className="absolute top-1.5 inset-x-0 h-3 flex justify-center items-center z-10">
-                      <span className="w-10 h-2 bg-black rounded-full" />
-                    </div>
-                    <img src={p.image} alt={p.name} className="w-full h-full object-cover pt-2" />
-                  </div>
-                ) : (
-                  <div className="relative w-[90%] aspect-[1.6/1] rounded-xl overflow-hidden border border-black/10 bg-white shadow-xl transition-transform duration-500 group-hover:scale-[1.02]">
-                    <div className="h-5 bg-gray-100 border-b border-gray-200 flex items-center gap-1 px-2.5">
-                      <span className="w-1.5 h-1.5 rounded-full bg-red-400" />
-                      <span className="w-1.5 h-1.5 rounded-full bg-yellow-400" />
-                      <span className="w-1.5 h-1.5 rounded-full bg-green-400" />
-                    </div>
-                    <img src={p.image} alt={p.name} className="w-full h-[calc(100%-20px)] object-cover" />
-                  </div>
-                )}
-              </div>
-
-              {/* Blurry details overlay shown only on the active card */}
-              <div
-                className={`absolute inset-0 bg-black/80 backdrop-blur-md transition-all duration-500 flex flex-col justify-center p-6 md:p-10 z-20 text-white ${
-                  isActive ? "opacity-100 translate-y-0 pointer-events-auto" : "opacity-0 translate-y-4 pointer-events-none"
-                }`}
-              >
-                <span className="font-sans text-[9px] md:text-[10px] font-bold uppercase tracking-widest text-white/50">
-                  {p.tag}
-                </span>
-                <h3 className="font-sans text-lg md:text-xl font-bold text-white uppercase mt-2 tracking-tight">
-                  {p.name}
-                </h3>
-                <p className="text-white/70 mt-2.5 text-[11px] md:text-[13px] leading-relaxed font-sans max-w-md">
-                  {p.body}
+    <section id="about" className="bg-ink px-5 pb-24 md:pb-36">
+      <div className="mx-auto max-w-6xl rounded-[2rem] bg-paper px-6 py-16 text-ink md:px-14 md:py-20">
+        <div className="grid gap-14 lg:grid-cols-[1.1fr_0.9fr]">
+          <div>
+            <SectionHead
+              eyebrow="About"
+              title={
+                <>
+                  Builder first. <span className="font-serif font-normal italic">Learning in public.</span>
+                </>
+              }
+            />
+            <Reveal delay={0.1}>
+              <div className="mt-8 space-y-5 text-lg leading-relaxed text-ink/80">
+                <p>
+                  I'm a product manager based in Nigeria, obsessed with turning ambiguous ideas into products
+                  people rely on. My sweet spot is the messy beginning — where the problem isn't clear yet and
+                  the cost of building the wrong thing is highest.
                 </p>
+                <p>
+                  I combine strategic thinking with hands-on execution: I'll run the user interviews, write the
+                  PRD, and prototype the MVP with modern AI tooling myself. I share what I learn every week on
+                  LinkedIn.
+                </p>
+              </div>
+            </Reveal>
+          </div>
 
-                <div className="mt-4 flex flex-wrap gap-1.5">
-                  {p.meta.map((m) => (
-                    <span
-                      key={m}
-                      className="text-[9px] md:text-[10px] px-2.5 py-0.5 rounded-full border border-white/10 text-white/40"
-                    >
-                      {m}
+          <div className="space-y-10">
+            {Object.entries(toolkit).map(([label, items], i) => (
+              <Reveal key={label} delay={i * 0.06}>
+                <div className="font-mono text-[11px] uppercase tracking-[0.16em] text-muted">{label}</div>
+                <div className="mt-3 flex flex-wrap gap-2">
+                  {items.map((t) => (
+                    <span key={t} className="rounded-full border border-ink/10 bg-white px-3.5 py-1.5 text-sm">
+                      {t}
                     </span>
                   ))}
                 </div>
-
-                <div className="mt-5 flex flex-wrap gap-3">
-                  <a
-                    href={p.caseStudy}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="rounded-full px-4 py-2 text-[9px] md:text-[10px] font-bold uppercase tracking-widest text-black bg-white hover:bg-white/90 transition cursor-pointer"
-                  >
-                    Case Study →
-                  </a>
-                  <a
-                    href={p.live}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="rounded-full px-4 py-2 text-[9px] md:text-[10px] font-bold uppercase tracking-widest text-white hover:text-black hover:bg-white transition border border-white/15 cursor-pointer"
-                  >
-                    Live ↗
-                  </a>
-                </div>
-              </div>
-            </div>
-          );
-        })}
-        {/* Right-side spacer so last card scrolls fully into view */}
-        <div className="flex-shrink-0 w-8 md:w-24 lg:w-24 h-1" />
-      </div>
-
-      <div className="hidden lg:block h-6" />
-    </div>
-  );
-}
-
-function MilestonesToolkitCertifications() {
-  return (
-    <section className="relative bg-black text-white px-8 md:px-24 py-24 md:py-36 border-t border-white/10">
-      <div className="max-w-[1200px] mx-auto grid lg:grid-cols-2 gap-16">
-        <div>
-          <span className="font-display text-xs md:text-sm font-bold tracking-[0.2em] uppercase text-white/50">
-            MILESTONES & IMPACT
-          </span>
-          <h2 className="font-display font-extrabold leading-[0.95] tracking-tight text-[clamp(2.5rem,5vw,4.5rem)] uppercase mt-2">
-            I take <span className="text-outline text-white">pride</span> in my work.
-          </h2>
-
-          <div className="mt-12 space-y-6">
-            {milestones.map((m) => {
-              const Icon = m.icon;
-              return (
-                <div
-                  key={m.title}
-                  className="flex items-start gap-4 p-6 rounded-2xl border border-white/10 bg-[#0a0a0a] hover:border-white/20 transition cursor-pointer"
-                >
-                  <div className="text-brand-pink p-2 bg-white/5 rounded-xl">
-                    <Icon className="w-6 h-6" />
-                  </div>
-                  <div>
-                    <h3 className="font-display text-lg font-bold text-white">{m.title}</h3>
-                    <p className="text-white/60 mt-2 text-sm leading-relaxed">{m.body}</p>
-                  </div>
-                </div>
-              );
-            })}
+              </Reveal>
+            ))}
           </div>
         </div>
 
-        <div className="flex flex-col justify-between">
-          <div>
-            <span className="font-display text-xs md:text-sm font-bold tracking-[0.2em] uppercase text-white/50">
-              TOOLKIT & METHODOLOGY
-            </span>
-            <h2 className="font-display font-extrabold leading-[0.95] tracking-tight text-[clamp(2.5rem,5vw,4.5rem)] uppercase mt-2">
-              My <span className="text-outline text-white">Tools.</span>
-            </h2>
-
-            <div className="mt-12 space-y-8">
-              {toolkit.map((group) => (
-                <div key={group.label}>
-                  <div className="font-display text-xs font-bold uppercase tracking-[0.2em] text-white/50">
-                    {group.label}
+        <div className="mt-16 border-t border-line pt-10">
+          <Reveal>
+            <Eyebrow>Certifications</Eyebrow>
+          </Reveal>
+          <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+            {certifications.map((c, i) => (
+              <Reveal key={c.school} delay={i * 0.05}>
+                <div className="rounded-2xl border border-ink/10 bg-white p-5">
+                  <div className="flex items-center justify-between font-mono text-[11px] text-muted">
+                    <span>{c.year}</span>
+                    <Check className="h-4 w-4 text-success" />
                   </div>
-                  <div className="mt-4 flex flex-wrap gap-2.5">
-                    {group.items.map((item) => (
-                      <span
-                        key={item}
-                        className="rounded-full border border-white/10 px-4 py-2 text-xs md:text-sm font-medium text-white/80 hover:border-white/30 hover:bg-white/5 transition cursor-pointer"
-                      >
-                        {item}
-                      </span>
-                    ))}
-                  </div>
+                  <div className="mt-6 font-semibold">{c.school}</div>
+                  <div className="text-sm text-muted">{c.title}</div>
                 </div>
-              ))}
-            </div>
+              </Reveal>
+            ))}
           </div>
+        </div>
+      </div>
+    </section>
+  );
+}
 
-          <div className="mt-16 border-t border-white/10 pt-12">
-            <div className="font-display text-xs font-bold uppercase tracking-[0.2em] text-white/50 mb-6">
-              TRAINING & CERTIFICATIONS
-            </div>
-            <div className="grid sm:grid-cols-2 gap-4">
-              {certifications.map((c) => (
-                <div key={c.school} className="p-5 rounded-xl border border-white/10 bg-[#0a0a0a] cursor-pointer hover:border-white/20 transition">
-                  <span className="font-display text-xs font-bold text-brand-gradient">
-                    {c.year}
+function Testimonials() {
+  return (
+    <section className="px-5 py-24 md:py-36">
+      <div className="mx-auto max-w-6xl">
+        <SectionHead
+          eyebrow="Kind words"
+          title={
+            <>
+              What it's like to <span className="font-serif font-normal italic">work with me.</span>
+            </>
+          }
+        />
+        <div className="mt-14 grid gap-4 md:grid-cols-3">
+          {testimonials.map((t, i) => (
+            <Reveal key={t.name} delay={i * 0.08}>
+              <figure className="flex h-full flex-col rounded-3xl border border-ink/10 bg-white p-8">
+                <span className="font-serif text-6xl leading-none text-accent">“</span>
+                <blockquote className="mt-2 flex-1 text-[17px] leading-relaxed">{t.quote}</blockquote>
+                <figcaption className="mt-8 flex items-center gap-3 border-t border-line pt-5">
+                  <span className="grid h-10 w-10 place-items-center rounded-full bg-paper-2 font-semibold">
+                    {t.name[0]}
                   </span>
-                  <h4 className="font-display text-lg font-bold text-white mt-2">{c.title}</h4>
-                  <p className="text-white/50 text-xs mt-1">{c.school}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function Marquee() {
-  return (
-    <section className="relative overflow-hidden py-14 bg-white border-y border-black/10 select-none">
-      <div className="flex flex-col gap-6">
-        <div className="flex whitespace-nowrap overflow-hidden">
-          <div className="animate-[marquee_35s_linear_infinite] flex gap-12 text-6xl md:text-8xl lg:text-9xl font-display font-black text-black uppercase tracking-wider">
-            {Array.from({ length: 8 }).map((_, i) => (
-              <span key={i} className="flex items-center gap-8">
-                DESIGN <span className="text-black/90">✳</span> INSPIRE <span className="text-black/90">✳</span> CREATE <span className="text-black/90">✳</span>
-              </span>
-            ))}
-          </div>
-        </div>
-        <div className="flex whitespace-nowrap overflow-hidden">
-          <div className="animate-[marquee_40s_linear_infinite_reverse] flex gap-12 text-6xl md:text-8xl lg:text-9xl font-display font-black text-black uppercase tracking-wider">
-            {Array.from({ length: 8 }).map((_, i) => (
-              <span key={i} className="flex items-center gap-8">
-                CREATE <span className="text-black/90">✳</span> DESIGN <span className="text-black/90">✳</span> INSPIRE <span className="text-black/90">✳</span>
-              </span>
-            ))}
-          </div>
-        </div>
-      </div>
-      <style>{`
-        @keyframes marquee {
-          0% { transform: translateX(0); }
-          100% { transform: translateX(-33.33%); }
-        }
-      `}</style>
-    </section>
-  );
-}
-
-function KudosFeedback() {
-  return (
-    <section className="relative bg-black text-white px-8 md:px-24 py-24 md:py-36 border-t border-white/10">
-      <div className="max-w-[1200px] mx-auto">
-        <div className="flex items-center gap-3">
-          <span className="text-brand-pink p-2 bg-white/5 rounded-xl">
-            <Quote className="w-5 h-5" />
-          </span>
-          <span className="font-display text-xs md:text-sm font-bold tracking-[0.2em] uppercase text-white/50">
-            KUDOS & FEEDBACK
-          </span>
-        </div>
-        <h2 className="font-display font-extrabold leading-[0.95] tracking-tight text-[clamp(2.5rem,5vw,4.5rem)] uppercase mt-6">
-          Words <span className="text-outline text-white">from</span> colleagues.
-        </h2>
-
-        <div className="mt-16 grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {testimonials.map((t) => (
-            <div
-              key={t.name + t.context}
-              className="rounded-2xl border border-white/10 bg-[#0c0c0c] p-8 flex flex-col justify-between hover:border-brand-pink/30 hover:scale-[1.02] transition-all duration-300 shadow-xl cursor-pointer"
-            >
-              <p className="text-white/80 leading-relaxed text-sm md:text-base italic font-sans">
-                "{t.quote}"
-              </p>
-              <div className="mt-8 flex items-center gap-4 border-t border-white/5 pt-6">
-                <div className="w-10 h-10 rounded-full bg-brand-gradient flex items-center justify-center font-display font-bold text-black text-sm">
-                  {t.initial}
-                </div>
-                <div>
-                  <div className="font-display font-bold text-white text-sm">{t.name}</div>
-                  <div className="text-xs text-white/40">{t.context}</div>
-                </div>
-              </div>
-            </div>
+                  <span className="leading-tight">
+                    <span className="block text-sm font-semibold">{t.name}</span>
+                    <span className="block text-xs text-muted">{t.context}</span>
+                  </span>
+                </figcaption>
+              </figure>
+            </Reveal>
           ))}
         </div>
       </div>
@@ -769,198 +773,147 @@ function KudosFeedback() {
   );
 }
 
-function SharingInsights() {
+function Writing() {
   return (
-    <section className="relative bg-[#060606] text-white px-8 md:px-24 py-24 md:py-36 border-t border-white/10">
-      <div className="max-w-[1200px] mx-auto">
-        <div className="flex justify-between items-end">
-          <div>
-            <div className="flex items-center gap-3">
-              <span className="text-brand-cyan p-2 bg-white/5 rounded-xl">
-                <Linkedin className="w-5 h-5" />
-              </span>
-              <span className="font-display text-xs md:text-sm font-bold tracking-[0.2em] uppercase text-white/50">
-                SHARING INSIGHTS
-              </span>
-            </div>
-            <h2 className="font-display font-extrabold leading-[0.95] tracking-tight text-[clamp(2.5rem,5vw,4.5rem)] uppercase mt-6">
-              My <span className="text-outline text-white">Writing.</span>
-            </h2>
-          </div>
-          <a
-            href={LINKEDIN}
-            target="_blank"
-            rel="noreferrer"
-            className="font-display text-xs font-bold uppercase tracking-widest text-white/60 hover:text-white transition flex items-center gap-1 cursor-pointer"
-          >
-            VIEW ALL <ArrowUpRight className="w-3.5 h-3.5" />
-          </a>
+    <section id="writing" className="px-5 pb-24 md:pb-36">
+      <div className="mx-auto max-w-6xl">
+        <div className="flex flex-wrap items-end justify-between gap-6">
+          <SectionHead
+            eyebrow="Writing"
+            title={
+              <>
+                Notes on building <span className="font-serif font-normal italic">products.</span>
+              </>
+            }
+          />
+          <GhostButton href={LINKEDIN} external>
+            <Linkedin className="h-4 w-4" /> Follow on LinkedIn
+          </GhostButton>
         </div>
 
-        <div className="mt-16 grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {writing.map((w) => (
-            <a
-              key={w.href}
-              href={w.href}
-              target="_blank"
-              rel="noreferrer"
-              className="group rounded-xl border border-white/10 bg-[#0c0c0c] p-8 flex flex-col justify-between hover:border-brand-cyan/30 hover:-translate-y-1 transition-all duration-300 cursor-pointer min-h-[180px]"
-            >
-              <div className="flex justify-between items-start gap-4">
-                <p className="font-display text-base md:text-lg font-bold text-white leading-snug group-hover:text-brand-cyan transition-colors">
-                  {w.title}
-                </p>
-                <ArrowUpRight className="w-5 h-5 text-white/40 group-hover:text-brand-cyan transition-colors flex-shrink-0" />
-              </div>
-              <div className="mt-6 flex items-center gap-2 text-xs text-white/40 group-hover:text-white transition">
-                <span>Read on LinkedIn</span>
-              </div>
-            </a>
+        <ul className="mt-12 border-t border-line">
+          {writing.map((w, i) => (
+            <Reveal key={w.href} delay={i * 0.04}>
+              <li>
+                <a
+                  href={w.href}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="group grid grid-cols-[1fr_auto] items-center gap-6 border-b border-line py-6 md:grid-cols-[8rem_1fr_auto]"
+                >
+                  <span className="hidden font-mono text-[11px] uppercase tracking-[0.14em] text-muted md:block">
+                    {w.tag}
+                  </span>
+                  <span className="text-lg font-medium tracking-tight transition group-hover:text-accent md:text-xl">
+                    {w.title}
+                  </span>
+                  <ArrowUpRight className="h-5 w-5 text-muted transition group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-accent" />
+                </a>
+              </li>
+            </Reveal>
           ))}
-        </div>
+        </ul>
       </div>
     </section>
   );
 }
 
 function Contact() {
+  const [copied, setCopied] = useState(false);
+  const copy = async () => {
+    try {
+      await navigator.clipboard.writeText(EMAIL);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch {
+      window.location.href = `mailto:${EMAIL}`;
+    }
+  };
+
   return (
-    <section
-      id="contact"
-      className="relative bg-black text-white px-8 md:px-24 pt-24 md:pt-36 pb-16 border-t border-white/10"
-    >
-      <div className="max-w-[1200px] mx-auto">
-        <span className="font-display text-xs md:text-sm font-bold tracking-[0.2em] uppercase text-white/50">
-          GET IN TOUCH
-        </span>
-        <h2 className="font-display font-extrabold leading-[0.9] tracking-tight text-[clamp(2.5rem,8vw,6.5rem)] uppercase mt-2">
-          <span className="block text-white">Let's build</span>
-          <span className="block text-outline text-white">together.</span>
-        </h2>
+    <section id="contact" className="px-5 pb-10">
+      <div className="relative mx-auto max-w-6xl overflow-hidden rounded-[2.5rem] bg-ink px-6 py-20 text-white md:px-16 md:py-28">
+        <div className="pointer-events-none absolute -right-32 -top-32 h-96 w-96 rounded-full bg-accent/30 blur-3xl" />
+        <Reveal className="relative">
+          <Eyebrow dark>
+            <Available />
+          </Eyebrow>
+          <h2 className="mt-6 max-w-4xl text-[clamp(2.5rem,7vw,5.5rem)] font-semibold leading-[0.98] tracking-[-0.045em]">
+            Have a product to build — or a team to join?{" "}
+            <span className="font-serif font-normal italic text-accent">Let's talk.</span>
+          </h2>
+          <p className="mt-6 max-w-xl text-lg text-white/60">
+            Open to product manager roles and freelance engagements. I usually reply within 24 hours.
+          </p>
 
-        <p className="mt-6 max-w-xl text-lg text-white/50 leading-relaxed font-sans">
-          Open to PM roles, consulting, and collabs. Whether you have a question or just
-          want to say hi — my inbox is always open.
-        </p>
-
-        <div className="mt-10 flex flex-wrap gap-4">
-          <a
-            href={`mailto:${EMAIL}`}
-            className="gradient-border rounded-full px-8 py-4 font-display font-bold text-xs tracking-widest uppercase text-white hover:bg-white/5 transition inline-block cursor-pointer"
-          >
-            <Mail className="w-4 h-4 inline-block mr-2 -mt-0.5" />
-            {EMAIL}
-          </a>
-          <a
-            href={LINKEDIN}
-            target="_blank"
-            rel="noreferrer"
-            className="rounded-full px-8 py-4 font-display font-bold text-xs tracking-widest uppercase text-white/70 hover:text-white transition border border-white/15 inline-block cursor-pointer"
-          >
-            LinkedIn ↗
-          </a>
-        </div>
-
-        <div className="mt-28 grid grid-cols-2 md:grid-cols-4 gap-12 border-t border-white/10 pt-16 text-sm">
-          <div className="col-span-2 flex flex-col justify-between h-full">
-            <span className="font-display font-extrabold text-3xl tracking-tight text-white select-none">
-              IB
-            </span>
-            <span className="text-white/40 text-xs mt-8 leading-relaxed">
-              © {new Date().getFullYear()} · Imran Buhari. <br />
-              Built with intention.
-            </span>
+          <div className="mt-10 flex flex-wrap gap-3">
+            <a
+              href={`mailto:${EMAIL}?subject=Let's%20work%20together`}
+              className="group inline-flex items-center gap-2 rounded-full bg-accent px-6 py-4 text-sm font-medium text-white transition hover:bg-white hover:text-ink"
+            >
+              <Mail className="h-4 w-4" /> {EMAIL}
+            </a>
+            <button
+              onClick={copy}
+              className="inline-flex items-center gap-2 rounded-full border border-white/20 px-5 py-4 text-sm font-medium transition hover:border-white"
+            >
+              {copied ? <Check className="h-4 w-4 text-success" /> : <Copy className="h-4 w-4" />}
+              {copied ? "Copied" : "Copy email"}
+            </button>
+            <a
+              href={LINKEDIN}
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center gap-2 rounded-full border border-white/20 px-5 py-4 text-sm font-medium transition hover:border-white"
+            >
+              <Linkedin className="h-4 w-4" /> LinkedIn
+            </a>
           </div>
-
-          <div>
-            <h4 className="font-display font-bold text-xs uppercase tracking-wider text-white/40 mb-4">
-              SERVICES
-            </h4>
-            <ul className="space-y-2 text-white/60">
-              <li>Product Strategy</li>
-              <li>AI-Powered Products</li>
-              <li>Idea Validation</li>
-              <li>Product Analytics</li>
-            </ul>
-          </div>
-
-          <div>
-            <h4 className="font-display font-bold text-xs uppercase tracking-wider text-white/40 mb-4">
-              CONNECT
-            </h4>
-            <ul className="space-y-2 text-white/60">
-              <li>
-                <a href={`mailto:${EMAIL}`} className="hover:text-white transition">
-                  Email
-                </a>
-              </li>
-              <li>
-                <a href={LINKEDIN} target="_blank" rel="noreferrer" className="hover:text-white transition">
-                  LinkedIn
-                </a>
-              </li>
-            </ul>
-          </div>
-        </div>
+        </Reveal>
       </div>
+
+      <footer className="mx-auto mt-10 flex max-w-6xl flex-col items-center justify-between gap-3 px-2 text-sm text-muted sm:flex-row">
+        <span>
+          © {new Date().getFullYear()} Imran Buhari<span className="text-accent">.</span> Product Manager.
+        </span>
+        <a href="#top" className="font-mono text-[11px] uppercase tracking-[0.16em] hover:text-ink">
+          Back to top ↑
+        </a>
+      </footer>
     </section>
   );
 }
 
+/* ------------------------------------------------------------------ */
+
 export function Portfolio() {
-  const [open, setOpen] = useState(false);
-
   useEffect(() => {
-    document.documentElement.classList.add("dark");
-
-    const lenis = new Lenis({
-      duration: 1.2,
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-      orientation: "vertical",
-      gestureOrientation: "vertical",
-      smoothWheel: true,
-      wheelMultiplier: 1,
-      touchMultiplier: 2,
-      infinite: false,
-    });
-
-    function raf(time: number) {
-      lenis.raf(time);
-      requestAnimationFrame(raf);
-    }
-    requestAnimationFrame(raf);
-
-    lenis.on("scroll", ScrollTrigger.update);
-    gsap.ticker.add((time) => {
-      lenis.raf(time * 1000);
-    });
-    gsap.ticker.lagSmoothing(0);
-
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const lenis = new Lenis({ duration: 1.1, anchors: { offset: -80 } });
+    let raf = 0;
+    const loop = (t: number) => {
+      lenis.raf(t);
+      raf = requestAnimationFrame(loop);
+    };
+    raf = requestAnimationFrame(loop);
     return () => {
+      cancelAnimationFrame(raf);
       lenis.destroy();
-      gsap.ticker.remove(lenis.raf);
     };
   }, []);
 
   return (
-    <div className="min-h-screen bg-background text-foreground font-sans relative">
-      <Nav open={open} setOpen={setOpen} />
-
-      <main className="relative">
-        <div className="sticky top-0 h-screen w-full z-0 overflow-hidden">
-          <Hero />
-        </div>
-
-        <div className="relative z-10 bg-white rounded-t-[48px] md:rounded-t-[80px] shadow-[0_-20px_50px_rgba(0,0,0,0.15)]">
-          <About />
-          <Services />
-          <SelectedWork />
-          <MilestonesToolkitCertifications />
-          <Marquee />
-          <KudosFeedback />
-          <SharingInsights />
-          <Contact />
-        </div>
+    <div className="min-h-screen overflow-x-clip">
+      <Nav />
+      <main>
+        <Hero />
+        <ToolsMarquee />
+        <Work />
+        <Services />
+        <About />
+        <Testimonials />
+        <Writing />
+        <Contact />
       </main>
     </div>
   );
