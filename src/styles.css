@@ -7,15 +7,17 @@
   --font-serif: "Instrument Serif", Georgia, serif;
   --font-mono: "JetBrains Mono", ui-monospace, monospace;
 
-  --color-paper: #f4f1ea;
-  --color-paper-2: #ebe6db;
-  --color-ink: #12110f;
-  --color-ink-2: #1c1a17;
-  --color-muted: #6b665d;
-  --color-line: #d9d3c6;
-  --color-accent: #e4572e;
-  --color-accent-soft: #f7d9cc;
-  --color-success: #2f9e5b;
+  --color-night: #120706;
+  --color-night-2: #1c0d0a;
+  --color-night-3: #2a1511;
+  --color-cream: #f3ece2;
+  --color-cream-2: #e8dfd1;
+  --color-ink: #160b09;
+  --color-muted: #a8968c;
+  --color-muted-dark: #6f625a;
+  --color-gold: #d4a85a;
+  --color-gold-soft: #e9cf9b;
+  --color-success: #4cc27a;
 }
 
 @layer base {
@@ -23,19 +25,19 @@
     scroll-behavior: smooth;
   }
   body {
-    background: var(--color-paper);
-    color: var(--color-ink);
+    background: var(--color-night);
+    color: var(--color-cream);
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
   }
   ::selection {
-    background: var(--color-accent);
-    color: #fff;
+    background: var(--color-gold);
+    color: var(--color-ink);
   }
   :focus-visible {
-    outline: 2px solid var(--color-accent);
+    outline: 2px solid var(--color-gold);
     outline-offset: 3px;
     border-radius: 6px;
   }
@@ -49,7 +51,7 @@
 }
 
 @utility grain {
-  background-image: radial-gradient(rgba(18, 17, 15, 0.06) 1px, transparent 1px);
+  background-image: radial-gradient(rgba(243, 236, 226, 0.05) 1px, transparent 1px);
   background-size: 22px 22px;
 }
 
@@ -67,13 +69,13 @@
 
 @keyframes pulse-dot {
   0% {
-    box-shadow: 0 0 0 0 rgba(47, 158, 91, 0.55);
+    box-shadow: 0 0 0 0 rgba(76, 194, 122, 0.55);
   }
   70% {
-    box-shadow: 0 0 0 8px rgba(47, 158, 91, 0);
+    box-shadow: 0 0 0 8px rgba(76, 194, 122, 0);
   }
   100% {
-    box-shadow: 0 0 0 0 rgba(47, 158, 91, 0);
+    box-shadow: 0 0 0 0 rgba(76, 194, 122, 0);
   }
 }
 @utility pulse-dot {
