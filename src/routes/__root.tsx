@@ -6,6 +6,7 @@ import {
   useRouter,
   HeadContent,
   Scripts,
+  type ErrorComponentProps,
 } from "@tanstack/react-router";
 import { type ReactNode } from "react";
 
@@ -28,13 +29,13 @@ function NotFoundComponent() {
   );
 }
 
-function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
+function ErrorComponent({ error, reset }: ErrorComponentProps) {
   const router = useRouter();
   return (
     <div className="flex min-h-screen items-center justify-center bg-black px-4">
       <div className="max-w-md text-center">
         <h1 className="text-xl font-semibold text-white">Something went wrong</h1>
-        <p className="mt-2 text-sm text-white/50">{error.message}</p>
+        <p className="mt-2 text-sm text-white/50">{error instanceof Error ? error.message : String(error)}</p>
         <div className="mt-6 flex flex-wrap justify-center gap-3">
           <button
             onClick={() => { router.invalidate(); reset(); }}
