@@ -326,11 +326,10 @@ function Hero() {
         initial={{ opacity: 0, scale: 1.04 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 1.4, ease: easeOut }}
-        className="absolute inset-x-0 bottom-0 -z-10 h-[88svh] w-full object-cover object-[50%_0%] md:h-[100svh] md:object-[50%_15%]"
+        className="absolute inset-x-0 bottom-0 -z-10 h-[74svh] w-full object-cover object-[50%_0%] [mask-image:linear-gradient(to_bottom,transparent,black_22%)] md:[mask-image:none] md:h-[100svh] md:object-[50%_15%]"
       />
-      <div className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-[30svh] bg-gradient-to-b from-[#0e0302] to-transparent md:hidden" />
       {/* floor fade into the page */}
-      <div className="pointer-events-none absolute inset-x-0 bottom-0 -z-10 h-48 bg-gradient-to-t from-night to-transparent" />
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 -z-10 h-[46svh] bg-gradient-to-t from-night via-night/80 to-transparent md:h-48 md:via-transparent" />
 
       <h1 className="pointer-events-none relative mx-auto mt-28 flex w-full max-w-[1400px] flex-col px-5 font-display text-[clamp(4.5rem,10.5vw,10.5rem)] font-extrabold uppercase leading-[0.82] tracking-[-0.01em] text-gold md:mt-[22svh] md:flex-row md:justify-between md:px-10">
         <span className="sr-only">Imran Buhari, </span>
@@ -343,7 +342,7 @@ function Hero() {
       </h1>
 
       <div className="relative mx-auto mt-auto grid w-full max-w-[1400px] gap-8 px-5 pb-10 md:grid-cols-[1fr_auto_1fr] md:px-10 md:pb-14">
-        <motion.div {...enter(0.55)} className="max-w-sm self-end rounded-2xl bg-night/40 p-4 backdrop-blur-sm md:bg-transparent md:p-0 md:backdrop-blur-none">
+        <motion.div {...enter(0.55)} className="max-w-sm self-end">
           <p className="text-[17px] leading-relaxed text-cream/85">
             I take AI products from a fuzzy idea to a shipped MVP — discovery, specs, validation and launch.
           </p>
@@ -392,12 +391,12 @@ function StackCard({ p, i, total, progress }: { p: Project; i: number; total: nu
   const dim = useTransform(progress, [start, 1], [0, depth * 0.2]);
 
   return (
-    <div className="sticky top-24 flex h-[calc(100svh-7rem)] items-start md:top-28">
+    <div className="sticky top-20 mb-6 flex items-start md:top-28 md:mb-0 md:h-[calc(100svh-7rem)]">
       <motion.article
         style={{ scale, top: i * 18, background: `linear-gradient(140deg, ${p.tint} 0%, #140908 85%)` }}
-        className="relative grid h-full max-h-[680px] w-full origin-top overflow-hidden rounded-[2rem] border border-cream/10 shadow-[0_-24px_60px_-24px_rgba(0,0,0,0.75)] lg:grid-cols-[1.05fr_0.95fr]"
+        className="relative grid w-full origin-top md:h-full md:max-h-[680px] overflow-hidden rounded-[2rem] border border-cream/10 shadow-[0_-24px_60px_-24px_rgba(0,0,0,0.75)] lg:grid-cols-[1.05fr_0.95fr]"
       >
-        <div className="relative flex flex-col overflow-y-auto p-6 md:p-10">
+        <div className="relative flex flex-col p-6 md:overflow-y-auto md:p-10">
           <p className="text-sm font-medium" style={{ color: p.glow }}>
             {p.category} · {p.year}
           </p>
@@ -535,7 +534,7 @@ function About() {
           src={PHOTO}
           alt="Imran Buhari portrait"
           loading="lazy"
-          className="h-80 w-full object-cover object-[50%_20%] lg:h-full"
+          className="h-[440px] w-full object-cover object-[50%_25%] lg:h-full"
         />
         <div className="px-6 py-14 md:px-12 md:py-16">
           <Heading light>
