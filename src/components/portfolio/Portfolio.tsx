@@ -446,7 +446,7 @@ function Hero() {
 
 type Project = (typeof projects)[number];
 
-const STACK_QUERY = "(min-width: 1024px) and (min-height: 700px)";
+const STACK_QUERY = "(min-width: 1024px) and (min-height: 800px)";
 
 function useStackMode() {
   const [on, setOn] = useState(false);
