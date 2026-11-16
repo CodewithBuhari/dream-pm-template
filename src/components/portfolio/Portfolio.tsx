@@ -446,19 +446,45 @@ function Hero() {
 
 type Project = (typeof projects)[number];
 
-function StackCard({ p, i, total, progress }: { p: Project; i: number; total: number; progress: MotionValue<number> }) {
+const STACK_QUERY = "(min-width: 1024px) and (min-height: 700px)";
+
+function useStackMode() {
+  const [on, setOn] = useState(false);
+  useEffect(() => {
+    const mq = window.matchMedia(STACK_QUERY);
+    const update = () => setOn(mq.matches);
+    update();
+    mq.addEventListener("change", update);
+    return () => mq.removeEventListener("change", update);
+  }, []);
+  return on;
+}
+
+function StackCard({
+  p,
+  i,
+  total,
+  progress,
+  stacked,
+}: {
+  p: Project;
+  i: number;
+  total: number;
+  progress: MotionValue<number>;
+  stacked: boolean;
+}) {
   const start = i / total;
   const depth = total - 1 - i;
   const scale = useTransform(progress, [start, 1], [1, 1 - depth * 0.03]);
   const dim = useTransform(progress, [start, 1], [0, Math.min(depth * 0.12, 0.5)]);
 
   return (
-    <div className="sticky top-20 mb-[45svh] flex items-start last:mb-6 md:top-28 md:mb-[40svh] md:h-[calc(100svh-7rem)] md:last:mb-0">
+    <div className="mb-6 flex items-start stack:sticky stack:top-28 stack:mb-[40svh] stack:h-[calc(100svh-7rem)] stack:last:mb-0">
       <motion.article
-        style={{ scale, top: i * 18, background: `linear-gradient(140deg, ${p.tint} 0%, #140908 85%)` }}
-        className="relative grid w-full origin-top md:h-full md:max-h-[680px] overflow-hidden rounded-[2rem] border border-cream/10 shadow-[0_-24px_60px_-24px_rgba(0,0,0,0.75)] lg:grid-cols-[1.05fr_0.95fr]"
+        style={{ scale: stacked ? scale : 1, top: stacked ? i * 18 : 0, background: `linear-gradient(140deg, ${p.tint} 0%, #140908 85%)` }}
+        className="relative grid w-full origin-top overflow-hidden stack:h-full stack:max-h-[680px] rounded-[2rem] border border-cream/10 shadow-[0_-24px_60px_-24px_rgba(0,0,0,0.75)] lg:grid-cols-[1.05fr_0.95fr]"
       >
-        <div className="relative flex flex-col p-6 md:overflow-y-auto md:p-10">
+        <div className="relative flex flex-col p-6 md:p-10 stack:p-8 xl:stack:p-10">
           <p className="text-sm font-medium" style={{ color: p.glow }}>
             {p.category} · {p.year}
           </p>
@@ -559,7 +585,7 @@ function StackCard({ p, i, total, progress }: { p: Project; i: number; total: nu
           )}
         </div>
 
-        <motion.div style={{ opacity: dim }} className="pointer-events-none absolute inset-0 bg-black" />
+        {stacked && <motion.div style={{ opacity: dim }} className="pointer-events-none absolute inset-0 bg-black" />}
       </motion.article>
     </div>
   );
@@ -568,6 +594,7 @@ function StackCard({ p, i, total, progress }: { p: Project; i: number; total: nu
 function Work() {
   const ref = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end end"] });
+  const stacked = useStackMode();
 
   return (
     <section id="work" className="px-5 pt-24 md:pt-32">
@@ -577,7 +604,7 @@ function Work() {
         </Heading>
         <div ref={ref} className="relative mt-14 pb-24">
           {projects.map((p, i) => (
-            <StackCard key={p.name} p={p} i={i} total={projects.length} progress={scrollYProgress} />
+            <StackCard key={p.name} p={p} i={i} total={projects.length} progress={scrollYProgress} stacked={stacked} />
           ))}
         </div>
       </div>
