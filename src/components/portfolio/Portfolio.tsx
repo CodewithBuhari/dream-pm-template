@@ -207,14 +207,14 @@ const testimonials = [
   {
     quote:
       "Working with Imran on AgroLynk showed me what focused execution looks like under pressure. He made the hard calls and kept us shipping.",
-    name: "Teammate",
+    name: "Abdul Samad Oyewole",
     context: "AgroLynk team",
   },
   {
     quote:
       "Sprint Maestro saved our team hours every sprint. The backlog quality improved noticeably and our engineers stopped pushing back on estimates.",
-    name: "Early User",
-    context: "Sprint Maestro Beta",
+    name: "Yusuf Olagunju",
+    context: "Sprint Maestro early user",
   },
 ];
 
