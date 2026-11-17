@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import Lenis from "lenis";
 import { faq } from "./faq";
-import { motion, AnimatePresence, useScroll, useTransform, type MotionValue } from "framer-motion";
+import { motion, AnimatePresence, useScroll, useTransform, useMotionTemplate } from "framer-motion";
 import {
   ArrowUpRight,
   ArrowRight,
@@ -36,6 +36,7 @@ const navLinks = [
 const projects = [
   {
     name: "Sprint Maestro",
+    highlight: "80% less time from PRD to sprint backlog",
     category: "AI Productivity · B2B Tool",
     year: "2025",
     role: "Product Manager · team of 5",
@@ -55,6 +56,7 @@ const projects = [
   },
   {
     name: "Tiqra",
+    highlight: "Waitlist stage, team of 7",
     category: "AI Market Intelligence · Startups",
     year: "2026",
     role: "Co-Founder & Product Manager",
@@ -73,6 +75,7 @@ const projects = [
   },
   {
     name: "AgroLynk",
+    highlight: "#1 of 10 teams at Prodcademy Demo Day",
     category: "Agritech · Mobile MVP",
     year: "2025",
     role: "Product Manager",
@@ -92,6 +95,7 @@ const projects = [
   },
   {
     name: "ProjectPilot",
+    highlight: "Tested by 5+ student teams",
     category: "Project planning · Student teams",
     year: "2026",
     role: "Product Owner",
@@ -109,6 +113,7 @@ const projects = [
   },
   {
     name: "Ceeravo",
+    highlight: "Team of 23 · post-MVP",
     category: "Healthcare · Platform",
     year: "In development",
     role: "Team lead",
@@ -126,6 +131,7 @@ const projects = [
   },
   {
     name: "Edukate UIL",
+    highlight: "In development",
     category: "Education · Learning platform",
     year: "2026",
     role: "Product Manager",
@@ -446,173 +452,429 @@ function Hero() {
 
 type Project = (typeof projects)[number];
 
-const STACK_QUERY = "(min-width: 1024px) and (min-height: 800px)";
+const slug = (name: string) => name.toLowerCase().replace(/[^a-z0-9]+/g, "-");
 
-function useStackMode() {
-  const [on, setOn] = useState(false);
+/* Lenis instance, so the case-study sheet can pause page scrolling. */
+let lenisInstance: Lenis | null = null;
+
+function useIsMobile() {
+  const [m, setM] = useState(false);
   useEffect(() => {
-    const mq = window.matchMedia(STACK_QUERY);
-    const update = () => setOn(mq.matches);
-    update();
-    mq.addEventListener("change", update);
-    return () => mq.removeEventListener("change", update);
+    const on = () => setM(window.innerWidth < 810);
+    on();
+    window.addEventListener("resize", on);
+    return () => window.removeEventListener("resize", on);
   }, []);
-  return on;
+  return m;
 }
 
-function StackCard({
+/* Visual for a card or sheet: the product screenshot, or a type panel
+   for projects that don't have one yet. */
+function ProjectVisual({ p, className = "" }: { p: Project; className?: string }) {
+  if (p.image) {
+    return (
+      <img
+        src={p.image}
+        alt={`${p.name} product screen`}
+        loading="lazy"
+        className={`block h-full w-full object-cover object-left-top ${className}`}
+      />
+    );
+  }
+  return (
+    <div
+      aria-hidden="true"
+      className={`flex h-full w-full items-end p-6 ${className}`}
+      style={{ background: `radial-gradient(ellipse at 70% 15%, ${p.glow}40, transparent 65%), #120908` }}
+    >
+      <span
+        className="font-display text-[clamp(2.5rem,5vw,4.5rem)] font-extrabold uppercase leading-[0.85]"
+        style={{ color: p.glow }}
+      >
+        {p.name}
+      </span>
+    </div>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/* Stacking card — compact by design so it always fits on screen.     */
+/* The full story lives in the case-study sheet.                      */
+/* ------------------------------------------------------------------ */
+
+function WorkCard({
   p,
-  i,
+  index,
   total,
-  progress,
-  stacked,
+  isLast,
+  isMobile,
+  onOpen,
 }: {
   p: Project;
-  i: number;
+  index: number;
   total: number;
-  progress: MotionValue<number>;
-  stacked: boolean;
+  isLast: boolean;
+  isMobile: boolean;
+  onOpen: (id: string) => void;
 }) {
-  const start = i / total;
-  const depth = total - 1 - i;
-  const scale = useTransform(progress, [start, 1], [1, 1 - depth * 0.03]);
-  const dim = useTransform(progress, [start, 1], [0, Math.min(depth * 0.12, 0.5)]);
+  const ref = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
+  // Exit: shrink, tilt, soften and fade as the next card takes over.
+  const scale = useTransform(scrollYProgress, [0, 1], [1, 0.82]);
+  const rotate = useTransform(scrollYProgress, [0, 1], [0, -6]);
+  const opacity = useTransform(scrollYProgress, [0, 0.5, 1], [1, 0.45, 0]);
+  const mobileOpacity = useTransform(scrollYProgress, (v) => (v < 0.5 ? 1 - v * 1.2 : 0.4 - (v - 0.5) * 0.8));
+  const blurPx = useTransform(scrollYProgress, [0, 1], [0, 8]);
+  const filter = useMotionTemplate`blur(${blurPx}px)`;
+  const id = slug(p.name);
 
   return (
-    <div className="mb-6 flex items-start stack:sticky stack:top-28 stack:mb-[40svh] stack:h-[calc(100svh-7rem)] stack:last:mb-0">
-      <motion.article
-        style={{ scale: stacked ? scale : 1, top: stacked ? i * 18 : 0, background: `linear-gradient(140deg, ${p.tint} 0%, #140908 85%)` }}
-        className="relative grid w-full origin-top overflow-hidden stack:h-full stack:max-h-[680px] rounded-[2rem] border border-cream/10 shadow-[0_-24px_60px_-24px_rgba(0,0,0,0.75)] lg:grid-cols-[1.05fr_0.95fr]"
+    <motion.div
+      ref={ref}
+      className="sticky w-full will-change-transform"
+      style={{
+        top: isMobile ? 72 : 92 + index * 10,
+        zIndex: 10 + index,
+        scale: isLast ? 1 : scale,
+        rotate: isLast || isMobile ? 0 : rotate,
+        opacity: isLast ? 1 : isMobile ? mobileOpacity : opacity,
+        filter: isLast || isMobile ? "none" : filter,
+        marginBottom: isLast ? 0 : isMobile ? "10vh" : "20vh",
+        transformOrigin: "center center",
+      }}
+    >
+      <article
+        className="relative overflow-hidden rounded-[2rem] border border-cream/10 shadow-[0_24px_60px_-24px_rgba(0,0,0,0.8)]"
+        style={{ background: `linear-gradient(140deg, ${p.tint} 0%, #140908 80%)` }}
       >
-        <div className="relative flex flex-col p-6 md:p-10 stack:p-8 xl:stack:p-10">
-          <p className="text-sm font-medium" style={{ color: p.glow }}>
-            {p.category} · {p.year}
-          </p>
-          <h3 className="mt-3 text-4xl font-semibold tracking-[-0.035em] md:text-5xl">{p.name}</h3>
-          <p className="mt-2 text-lg text-cream/75">{p.headline}</p>
+        <div className="pointer-events-none absolute -right-24 -top-24 h-80 w-80 rounded-full opacity-25 blur-3xl" style={{ background: p.glow }} />
 
-          <dl className="mt-6 hidden space-y-4 text-[15px] leading-relaxed md:block">
-            {[
-              ["Problem", p.problem],
-              ["What I did", p.approach],
-            ].map(([k, v]) => (
-              <div key={k} className="grid grid-cols-[6.5rem_1fr] gap-4">
-                <dt className="font-semibold text-cream">{k}</dt>
-                <dd className="text-cream/75">{v}</dd>
-              </div>
-            ))}
-            {p.outcome && (
-              <div className="grid grid-cols-[6.5rem_1fr] gap-4">
-                <dt className="font-semibold text-gold">Outcome</dt>
-                <dd className="font-medium text-cream">{p.outcome}</dd>
-              </div>
-            )}
-          </dl>
-          <div className="mt-5 space-y-3 text-[15px] leading-relaxed md:hidden">
-            {!p.image && (
-              <>
-                <p className="text-cream/75">
-                  <span className="font-semibold text-cream">Problem: </span>
-                  {p.problem}
-                </p>
-                <p className="text-cream/75">
-                  <span className="font-semibold text-cream">What I did: </span>
-                  {p.approach}
-                </p>
-              </>
-            )}
-            {p.outcome && (
-              <p className="font-medium">
-                <span className="text-gold">Outcome: </span>
-                {p.outcome}
-              </p>
-            )}
+        <div className="relative grid gap-4 p-4 sm:gap-6 sm:p-8 lg:h-[min(500px,calc(100svh-180px))] lg:min-h-[400px] lg:grid-cols-[minmax(0,1fr)_300px_170px] lg:gap-8 lg:p-9 xl:grid-cols-[minmax(0,1fr)_400px_190px]">
+          {/* Left: pitch + name */}
+          <div className="flex min-w-0 flex-col justify-between gap-6">
+            <p className="hidden max-w-[34ch] text-[15px] leading-relaxed text-cream/70 sm:block">{p.headline}</p>
+            <button type="button" onClick={() => onOpen(id)} className="group text-left">
+              <span className="flex items-center gap-1 border-b border-cream/15 pb-3 text-sm tabular-nums">
+                <span className="text-cream">{String(index + 1).padStart(2, "0")}</span>
+                <span className="text-cream/50">/ {String(total).padStart(2, "0")}</span>
+                <span className="ml-auto text-xs font-medium" style={{ color: p.glow }}>
+                  {p.category}
+                </span>
+              </span>
+              <h3
+                className="mt-3 font-semibold leading-[0.95] tracking-[-0.04em] text-cream transition-colors group-hover:text-gold"
+                style={{ fontSize: `clamp(2.25rem, ${Math.min(6, 60 / Math.max(p.name.length, 8))}vw, 5.5rem)` }}
+              >
+                {p.name}
+              </h3>
+            </button>
           </div>
 
-          {p.image && <img
-            src={p.image}
-            alt={`${p.name} landing page`}
-            loading="lazy"
-            className="mt-6 w-full rounded-xl border border-cream/10 shadow-[0_20px_40px_-12px_rgba(0,0,0,0.6)] lg:hidden"
-          />}
+          {/* Middle: visual + the one action */}
+          <div className="flex flex-col gap-3">
+            <button
+              type="button"
+              onClick={() => onOpen(id)}
+              aria-label={`Open the ${p.name} case study`}
+              className="group relative block aspect-[16/8] overflow-hidden rounded-[1.25rem] border border-cream/10 sm:aspect-[16/10] lg:aspect-auto lg:min-h-0 lg:flex-1"
+            >
+              <ProjectVisual p={p} className="transition-transform duration-500 ease-[var(--ease-out)] group-hover:scale-[1.03]" />
+            </button>
+            <button
+              type="button"
+              onClick={() => onOpen(id)}
+              className="min-h-11 rounded-2xl border border-cream/10 bg-cream/[0.07] px-4 text-xs font-semibold uppercase tracking-[0.08em] text-cream transition-[background-color,transform] duration-200 hover:bg-cream/[0.12] active:scale-[0.98]"
+            >
+              View case study
+            </button>
+          </div>
 
-          {(p.caseStudy || p.live) && (
-            <div className="mt-auto flex flex-wrap gap-3 pt-6">
-              {p.caseStudy && (
-                <a href={p.caseStudy} target="_blank" rel="noreferrer" className={btnGold}>
-                  Read the {p.name} case study <ArrowUpRight className="h-4 w-4" />
-                </a>
-              )}
-              {p.live && (
-                <a href={p.live} target="_blank" rel="noreferrer" className={btnGhost}>
-                  Open {p.name} <ArrowUpRight className="h-4 w-4" />
-                </a>
-              )}
+          {/* Right: facts */}
+          <dl className="grid grid-cols-[auto_1fr] gap-x-5 gap-y-3 text-[13px] sm:grid-cols-3 sm:text-sm lg:flex lg:flex-col lg:justify-between lg:gap-6">
+            <div>
+              <dt className="text-cream/55">Year</dt>
+              <dd className="mt-1 font-medium text-cream">{p.year}</dd>
             </div>
-          )}
-          {!p.caseStudy && !p.live && (
-            <div className="mt-auto flex flex-wrap gap-2 pt-6">
+            <div>
+              <dt className="text-cream/55">Role</dt>
+              <dd className="mt-1 font-medium text-cream">{p.role}</dd>
+            </div>
+            <div className="col-span-2 sm:col-span-1">
+              <dt className="text-cream/55">Result</dt>
+              <dd className="mt-1 font-medium leading-snug text-gold">{p.highlight}</dd>
+            </div>
+          </dl>
+        </div>
+      </article>
+    </motion.div>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/* Case-study sheet — slides up, holds the full story.                */
+/* ------------------------------------------------------------------ */
+
+function CaseStudySheet({ id, onChange, onClose }: { id: string; onChange: (id: string) => void; onClose: () => void }) {
+  const p = projects.find((x) => slug(x.name) === id);
+  const scroller = useRef<HTMLDivElement>(null);
+  const closeBtn = useRef<HTMLButtonElement>(null);
+
+  useEffect(() => {
+    const prev = document.activeElement as HTMLElement | null;
+    const html = document.documentElement;
+    const prevOverflow = html.style.overflow;
+    html.style.overflow = "hidden";
+    lenisInstance?.stop();
+    closeBtn.current?.focus({ preventScroll: true });
+    return () => {
+      html.style.overflow = prevOverflow;
+      lenisInstance?.start();
+      prev?.focus?.({ preventScroll: true });
+    };
+  }, []);
+
+  useEffect(() => {
+    const top = () => scroller.current?.scrollTo({ top: 0 });
+    top();
+    const raf = requestAnimationFrame(top);
+    return () => cancelAnimationFrame(raf);
+  }, [id]);
+
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        e.preventDefault();
+        onClose();
+      }
+      if (e.key === "Tab" && scroller.current) {
+        const root = scroller.current.parentElement!;
+        const f = root.querySelectorAll<HTMLElement>('a[href],button:not([disabled]),[tabindex]:not([tabindex="-1"])');
+        if (!f.length) return;
+        const first = f[0];
+        const last = f[f.length - 1];
+        if (e.shiftKey && document.activeElement === first) {
+          e.preventDefault();
+          last.focus();
+        } else if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault();
+          first.focus();
+        }
+      }
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [onClose]);
+
+  if (!p) return null;
+  const others = projects.filter((x) => x !== p);
+  const headingId = `case-${id}`;
+
+  return (
+    <div className="fixed inset-0 z-[200]">
+      <motion.div
+        className="absolute inset-0 bg-black/60 backdrop-blur-[2px]"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 0.3 }}
+        onClick={onClose}
+        aria-hidden="true"
+      />
+      <motion.div
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby={headingId}
+        className="absolute inset-x-0 bottom-0 top-3 flex flex-col overflow-hidden rounded-t-[1.75rem] border border-cream/10 bg-night shadow-[0_-24px_80px_rgba(0,0,0,0.5)] sm:inset-x-3 sm:top-6 lg:inset-x-6"
+        initial={{ y: "100%" }}
+        animate={{ y: 0 }}
+        exit={{ y: "100%" }}
+        transition={{ type: "spring", stiffness: 260, damping: 32, mass: 0.9 }}
+        onAnimationComplete={() => scroller.current?.scrollTo({ top: 0 })}
+      >
+        <div className="relative flex h-16 shrink-0 items-center gap-3 border-b border-cream/10 bg-night/90 px-4 backdrop-blur sm:px-6">
+          <span aria-hidden="true" className="absolute left-1/2 top-2 h-1 w-10 -translate-x-1/2 rounded-full bg-cream/20" />
+          <p className="truncate text-lg font-semibold tracking-tight">{p.name}</p>
+          <span className="hidden text-sm text-cream/55 sm:inline">{p.year}</span>
+          <div className="ml-auto flex items-center gap-2">
+            {p.live && (
+              <a
+                href={p.live}
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex h-10 items-center gap-1.5 rounded-full border border-cream/20 px-4 text-sm transition-colors hover:border-cream/60"
+              >
+                Open {p.name} <ArrowUpRight className="h-4 w-4" />
+              </a>
+            )}
+            <button
+              ref={closeBtn}
+              type="button"
+              onClick={onClose}
+              aria-label="Close case study"
+              className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-gold text-ink transition-colors hover:bg-gold-soft"
+            >
+              <X className="h-4 w-4" />
+            </button>
+          </div>
+        </div>
+
+        <div ref={scroller} data-lenis-prevent className="flex-1 overflow-y-auto overscroll-contain">
+          <article className="mx-auto max-w-[1200px] px-5 pb-16 pt-10 sm:px-8 sm:pt-14 lg:px-12">
+            <p className="text-sm font-medium" style={{ color: p.glow }}>
+              {p.category} · {p.year}
+            </p>
+            <h2 id={headingId} className="mt-3 break-words text-[clamp(3rem,8vw,7rem)] font-semibold leading-[0.9] tracking-[-0.045em]">
+              {p.name}
+            </h2>
+            <div className="mt-6 flex flex-wrap gap-2">
               {[p.role, ...p.stack].map((t) => (
-                <span key={t} className="rounded-full border border-cream/15 px-3 py-1 text-xs text-cream/70">
+                <span key={t} className="inline-flex h-8 items-center rounded-full bg-cream/[0.07] px-3.5 text-[13px] text-cream/85">
                   {t}
                 </span>
               ))}
             </div>
-          )}
-        </div>
+            <p className="mt-8 max-w-[52ch] font-serif text-[clamp(1.4rem,2.4vw,2rem)] italic leading-snug text-cream/90">{p.headline}</p>
 
-        <div className="relative hidden items-center p-8 lg:flex">
-          {p.image ? (
-            <img
-              src={p.image}
-              alt={`${p.name} landing page`}
-              loading="lazy"
-              className="w-full rounded-xl border border-cream/10 shadow-[0_24px_48px_-16px_rgba(0,0,0,0.7)]"
-            />
-          ) : (
-            <div
-              aria-hidden="true"
-              className="flex h-full w-full items-end rounded-xl border border-cream/10 p-8"
-              style={{ background: `radial-gradient(ellipse at 70% 20%, ${p.glow}33, transparent 65%)` }}
-            >
-              <span
-                className="font-display text-[clamp(4rem,8vw,7.5rem)] font-extrabold uppercase leading-[0.85]"
-                style={{ color: p.glow }}
-              >
-                {p.name}
-              </span>
+            <div className="mt-10 overflow-hidden rounded-[1.25rem] border border-cream/10">
+              {p.image ? (
+                <img src={p.image} alt={`${p.name} product screen`} className="block h-auto w-full" />
+              ) : (
+                <div className="aspect-[16/7]">
+                  <ProjectVisual p={p} />
+                </div>
+              )}
             </div>
-          )}
-        </div>
 
-        {stacked && <motion.div style={{ opacity: dim }} className="pointer-events-none absolute inset-0 bg-black" />}
-      </motion.article>
+            <div className="mt-14 grid gap-10 border-t border-cream/10 pt-10 lg:grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)]">
+              <div className="space-y-9">
+                {[
+                  ["The problem", p.problem],
+                  ["What I did", p.approach],
+                  ["Outcome", p.outcome],
+                ]
+                  .filter(([, v]) => v)
+                  .map(([k, v]) => (
+                    <section key={k}>
+                      <h3 className={`text-2xl font-semibold tracking-tight ${k === "Outcome" ? "text-gold" : ""}`}>{k}</h3>
+                      <p className="mt-3 max-w-[62ch] text-[17px] leading-relaxed text-cream/75">{v}</p>
+                    </section>
+                  ))}
+              </div>
+              <aside className="self-start rounded-3xl bg-cream/[0.05] p-6 sm:p-8">
+                <dl className="grid grid-cols-2 gap-x-6 gap-y-5 text-[15px]">
+                  <div>
+                    <dt className="text-cream/55">Year</dt>
+                    <dd className="mt-1">{p.year}</dd>
+                  </div>
+                  <div>
+                    <dt className="text-cream/55">Field</dt>
+                    <dd className="mt-1">{p.category}</dd>
+                  </div>
+                  <div className="col-span-2">
+                    <dt className="text-cream/55">Role</dt>
+                    <dd className="mt-1">{p.role}</dd>
+                  </div>
+                  <div className="col-span-2">
+                    <dt className="text-cream/55">Result</dt>
+                    <dd className="mt-1 text-gold">{p.highlight}</dd>
+                  </div>
+                </dl>
+                <div className="mt-7 flex flex-wrap gap-3">
+                  <a href="#contact" onClick={onClose} className={btnGold}>
+                    Work with Imran
+                  </a>
+                  {p.caseStudy && (
+                    <a href={p.caseStudy} target="_blank" rel="noreferrer" className={btnGhost}>
+                      Full write-up <ArrowUpRight className="h-4 w-4" />
+                    </a>
+                  )}
+                </div>
+              </aside>
+            </div>
+
+            <section aria-labelledby="more-work" className="mt-20">
+              <h3 id="more-work" className="text-2xl font-semibold tracking-tight">
+                More work
+              </h3>
+              <ul className="mt-6 grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-5">
+                {others.map((o) => (
+                  <li key={o.name}>
+                    <button type="button" onClick={() => onChange(slug(o.name))} className="group block w-full text-left">
+                      <span className="block aspect-[4/3] overflow-hidden rounded-2xl border border-cream/10">
+                        <ProjectVisual p={o} className="transition-transform duration-500 group-hover:scale-[1.04]" />
+                      </span>
+                      <span className="mt-3 block text-lg font-semibold tracking-tight group-hover:text-gold">{o.name}</span>
+                      <span className="block text-[13px] text-cream/55">{o.category}</span>
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          </article>
+        </div>
+      </motion.div>
     </div>
   );
 }
 
 function Work() {
-  const ref = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end end"] });
-  const stacked = useStackMode();
+  const isMobile = useIsMobile();
+  const [open, setOpen] = useState<string | null>(null);
+
+  // Deep link: #case-<project> opens that case study; Back closes it.
+  useEffect(() => {
+    const read = () => {
+      const m = window.location.hash.match(/^#case-(.+)$/);
+      setOpen(m && projects.some((p) => slug(p.name) === m[1]) ? m[1] : null);
+    };
+    read();
+    window.addEventListener("hashchange", read);
+    return () => window.removeEventListener("hashchange", read);
+  }, []);
+  const openCase = (id: string) => {
+    if (window.location.hash !== `#case-${id}`) window.history.pushState(null, "", `#case-${id}`);
+    setOpen(id);
+  };
+  const closeCase = () => {
+    if (window.location.hash.startsWith("#case-")) window.history.pushState(null, "", window.location.pathname + window.location.search);
+    setOpen(null);
+  };
+  useEffect(() => {
+    const onPop = () => {
+      if (!window.location.hash.startsWith("#case-")) setOpen(null);
+    };
+    window.addEventListener("popstate", onPop);
+    return () => window.removeEventListener("popstate", onPop);
+  }, []);
 
   return (
-    <section id="work" className="px-5 pt-24 md:pt-32">
+    <section id="work" className="px-3 pt-24 sm:px-5 md:pt-32">
       <div className="mx-auto max-w-6xl">
-        <Heading sub="Each started as a fuzzy problem. Here's what I found, what I decided, and what shipped.">
-          Selected <Serif gold>work.</Serif>
-        </Heading>
-        <div ref={ref} className="relative mt-14 pb-24">
+        <div className="px-2 sm:px-0">
+          <Heading sub="Each started as a fuzzy problem. Here's what I found, what I decided, and what shipped.">
+            Selected <Serif gold>work.</Serif>
+          </Heading>
+        </div>
+        <div className="relative mt-14 flex flex-col pb-24">
           {projects.map((p, i) => (
-            <StackCard key={p.name} p={p} i={i} total={projects.length} progress={scrollYProgress} stacked={stacked} />
+            <WorkCard
+              key={p.name}
+              p={p}
+              index={i}
+              total={projects.length}
+              isLast={i === projects.length - 1}
+              isMobile={isMobile}
+              onOpen={openCase}
+            />
           ))}
         </div>
       </div>
+      <AnimatePresence>
+        {open && <CaseStudySheet key="sheet" id={open} onChange={openCase} onClose={closeCase} />}
+      </AnimatePresence>
     </section>
   );
 }
-
-/* ------------------------------------------------------------------ */
 
 function Services() {
   return (
@@ -864,6 +1126,7 @@ export function Portfolio() {
   useEffect(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     const lenis = new Lenis({ duration: 1.1, anchors: { offset: -80 } });
+    lenisInstance = lenis;
     let raf = 0;
     const loop = (t: number) => {
       lenis.raf(t);
@@ -873,6 +1136,7 @@ export function Portfolio() {
     return () => {
       cancelAnimationFrame(raf);
       lenis.destroy();
+      lenisInstance = null;
     };
   }, []);
 

@@ -2,8 +2,6 @@
 @source "../src";
 @import "tw-animate-css";
 
-/* Stacking project cards only where a whole card fits on screen. */
-@custom-variant stack (@media (min-width: 1024px) and (min-height: 800px));
 
 @theme inline {
   --font-sans: "Inter Tight", ui-sans-serif, system-ui, sans-serif;
