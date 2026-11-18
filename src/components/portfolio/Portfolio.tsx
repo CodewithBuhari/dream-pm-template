@@ -525,13 +525,50 @@ function WorkCard({
   onOpen: (id: string) => void;
 }) {
   const ref = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
+  const stickyTop = isMobile ? 72 : 92 + index * 10;
+  // Progress is measured from the card's layout position, not its on-screen
+  // box: a pinned card never moves on screen, so element-based scroll
+  // progress would stay at 0 and the exit would never play.
+  const { scrollY } = useScroll();
+  const range = useRef({ start: 0, length: 1 });
+  useEffect(() => {
+    const measure = () => {
+      const el = ref.current;
+      if (!el || !el.parentElement) return;
+      const parentTop = el.parentElement.getBoundingClientRect().top + window.scrollY;
+      let offset = 0;
+      for (const sib of Array.from(el.parentElement.children) as HTMLElement[]) {
+        if (sib === el) break;
+        offset += sib.offsetHeight + parseFloat(getComputedStyle(sib).marginBottom || "0");
+      }
+      const mb = parseFloat(getComputedStyle(el).marginBottom || "0");
+      range.current = { start: parentTop + offset - stickyTop, length: Math.max(1, el.offsetHeight + mb) };
+    };
+    measure();
+    const ro = new ResizeObserver(measure);
+    if (ref.current?.parentElement) ro.observe(ref.current.parentElement);
+    window.addEventListener("resize", measure);
+    return () => {
+      ro.disconnect();
+      window.removeEventListener("resize", measure);
+    };
+  }, [stickyTop]);
+  const scrollYProgress = useTransform(scrollY, (y) => (y - range.current.start) / range.current.length);
   // Exit: shrink, tilt, soften and fade as the next card takes over.
-  const scale = useTransform(scrollYProgress, [0, 1], [1, 0.82]);
-  const rotate = useTransform(scrollYProgress, [0, 1], [0, -6]);
-  const opacity = useTransform(scrollYProgress, [0, 0.5, 1], [1, 0.45, 0]);
-  const mobileOpacity = useTransform(scrollYProgress, (v) => (v < 0.5 ? 1 - v * 1.2 : 0.4 - (v - 0.5) * 0.8));
-  const blurPx = useTransform(scrollYProgress, [0, 1], [0, 8]);
+  // Function form on purpose: keyframe-array transforms get handed to a native
+  // scroll timeline, which freezes on sticky elements, so the exit never runs.
+  const clamp = (v: number) => Math.min(1, Math.max(0, v));
+  const scale = useTransform(scrollYProgress, (v) => 1 - 0.18 * clamp(v));
+  const rotate = useTransform(scrollYProgress, (v) => -6 * clamp(v));
+  const opacity = useTransform(scrollYProgress, (v) => {
+    const t = clamp(v);
+    return t < 0.5 ? 1 - t * 1.1 : 0.45 - (t - 0.5) * 0.9;
+  });
+  const mobileOpacity = useTransform(scrollYProgress, (v) => {
+    const t = clamp(v);
+    return t < 0.5 ? 1 - t * 1.2 : 0.4 - (t - 0.5) * 0.8;
+  });
+  const blurPx = useTransform(scrollYProgress, (v) => 8 * clamp(v));
   const filter = useMotionTemplate`blur(${blurPx}px)`;
   const id = slug(p.name);
 
@@ -540,7 +577,7 @@ function WorkCard({
       ref={ref}
       className="sticky w-full will-change-transform"
       style={{
-        top: isMobile ? 72 : 92 + index * 10,
+        top: stickyTop,
         zIndex: 10 + index,
         scale: isLast ? 1 : scale,
         rotate: isLast || isMobile ? 0 : rotate,
