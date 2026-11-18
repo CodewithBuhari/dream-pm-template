@@ -49,7 +49,7 @@ const projects = [
     outcome:
       "10 early users tested the MVP and reported an 80% reduction in time spent turning a PRD into a sprint-ready backlog.",
     image:
-      "https://imran-buhari.netlify.app/assets/images/sprint_maestro_hero_new_1779022418718.png",
+      "/images/sprint-maestro.webp",
     caseStudy: "https://imran-buhari.netlify.app/sprint-maestro",
     live: "https://sprintmaestro.lovable.app/",
     tint: "#2b1220", glow: "#e0659a",
@@ -68,7 +68,7 @@ const projects = [
       "Co-founded Tiqra and lead product for a 7-person cross-functional team. Authored the PRD for its \"Truth Layer\", a real-time filter that screens out unreliable survey responses before AI feasibility analysis gives a Proceed / Pivot / Kill call.",
     outcome: "At waitlist stage, with design, engineering and data workstreams driving toward public launch.",
     image:
-      "https://imran-buhari.netlify.app/assets/images/tiqra_hero_landing_1779022691308.png",
+      "/images/tiqra.webp",
     caseStudy: "https://imran-buhari.netlify.app/tiqra",
     live: "https://tiqra-mvp.vercel.app/",
     tint: "#2a1c0c", glow: "#e3a33c",
@@ -88,7 +88,7 @@ const projects = [
     outcome:
       "Ranked #1 of 10 teams at Prodcademy Demo Day, with 80% reported user satisfaction in early testing.",
     image:
-      "https://imran-buhari.netlify.app/assets/images/agrolynk_hero_1779022333927.png",
+      "/images/agrolynk.webp",
     caseStudy: "https://imran-buhari.netlify.app/agrolynk",
     live: "https://agrolynk.lovable.app/",
     tint: "#0f2318", glow: "#4cc27a",
@@ -473,12 +473,19 @@ function useIsMobile() {
 function ProjectVisual({ p, className = "" }: { p: Project; className?: string }) {
   if (p.image) {
     return (
-      <img
-        src={p.image}
-        alt={`${p.name} product screen`}
-        loading="lazy"
-        className={`block h-full w-full object-cover object-left-top ${className}`}
-      />
+      <div
+        className="flex h-full w-full items-center justify-center p-2 sm:p-3"
+        style={{ background: `radial-gradient(ellipse at 50% 30%, ${p.glow}26, transparent 70%), #0d0706` }}
+      >
+        <img
+          src={p.image}
+          alt={`${p.name} product screen`}
+          width={1408}
+          height={768}
+          decoding="async"
+          className={`block h-auto max-h-full w-auto max-w-full rounded-lg object-contain shadow-[0_12px_32px_-12px_rgba(0,0,0,0.7)] ${className}`}
+        />
+      </div>
     );
   }
   return (
