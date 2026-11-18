@@ -207,7 +207,7 @@ const testimonials = [
   {
     quote:
       "Imran approaches product with a level of clarity and intentionality that's rare. He asks the right questions before writing a single line of spec.",
-    name: "Cohort Member",
+    name: "Awwal Adepoju",
     context: "PM Learning Cohort",
   },
   {
